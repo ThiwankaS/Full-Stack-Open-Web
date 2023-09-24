@@ -21,7 +21,7 @@ const App = () => {
     </div>
   )
 }
-
+//Header, Content, Total are components
 const Header = (props) => { 
   return (
     <div>
