@@ -6,25 +6,24 @@ const App = () => {
 
   const course = 'Half Stack application development';
 
-  const part1 = { 
-    name :'Fundamentals of React',
-    exercises : 10 };
-
-  const part2 = { 
-    name : 'Using props to pass data',
-    exercises : 7 };
-  
-  const part3 = { 
+  const part = [
+    { 
+      name :'Fundamentals of React',
+      exercises : 10 },
+    { 
+     name : 'Using props to pass data',
+     exercises : 7 }, 
+    { 
     name : 'State of a component',
-    exercises : 14 };
+    exercises : 14 } ]
 
 
   return (
 
     <div>
     <Header course={course} />
-    <Content part={[part1.name, part2.name, part3.name]} exercises={[part1.exercises, part2.exercises, part3.exercises]} />
-    <Total exercises={[part1.exercises, part2.exercises, part3.exercises]} />
+    <Content courseInfo= {part}/>
+    <Total courseInfo= {part}/>
     </div>
   )
 }
@@ -40,20 +39,25 @@ const Header = (props) => {
 //Refactoring the Content component
 const Content = (props) => {
   console.log(props);
+  const parts = props.courseInfo;
   return (
     <div>
-      <Part partName={props.part[0]} exercisesNumber={props.exercises[0]} />
-      <Part partName={props.part[1]} exercisesNumber={props.exercises[1]} />
-      <Part partName={props.part[2]} exercisesNumber={props.exercises[2]} />
+          {
+            parts.map((part,index) => (
+              <Part key={index} partName={part.name} exercisesNumber={part.exercises} />
+            ))
+          }
     </div>
   )
 }
 
 const Total = (props) => {
   console.log(props);
+  const parts = props.courseInfo;
+  const totalExercises = parts.reduce((total, part) => total + part.exercises,0); 
   return (
     <div>
-      <p>Number of exercises {props.exercises[0] + props.exercises[1] + props.exercises[2]}</p>
+      <p>Number of exercises {totalExercises}</p>
     </div>
   )
 }
