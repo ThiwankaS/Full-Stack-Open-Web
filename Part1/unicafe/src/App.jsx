@@ -79,4 +79,4 @@ const StatisticsLine = (props) => {
   )
 }
 
-export default App
+export default App;
