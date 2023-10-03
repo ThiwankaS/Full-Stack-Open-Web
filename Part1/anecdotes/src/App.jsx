@@ -7,7 +7,6 @@ const App = () => {
   const [ selected,setSelcted ] = useState(0); 
   const [ voteCount,setVoteCount ] = useState([0,0,0,0,0,0,0,0]); 
 
-
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -30,13 +29,34 @@ const App = () => {
     setVoteCount(newVoteCount);
   }
 
+  const indexOfMaxValue = (array) => {
+      if(array.length === 0){
+        return -1; 
+      } else {
+        let index = 0; 
+        let maxValue = array[index]; 
+        for(let i = 1; i <= array.length; i++){
+          if(array[i] > maxValue){
+            maxValue = array[i]; 
+            index = i; 
+          }
+        }
+        return index; 
+      }
+  }
+
   return (
     <div>
+      <h2>Anecdote of the day </h2>
       {anecdotes[selected]}
       <p>has {voteCount[selected]} votes</p>
       <br/>
       <button onClick={countVotes}>vote</button>
       <button onClick={handelClick}>next anecdote</button>
+      <br/>
+      <h2>Anecdote with most votes </h2>
+      <p>{anecdotes[indexOfMaxValue(voteCount)]}</p>
+      <p>has {voteCount[indexOfMaxValue(voteCount)]} votes</p>
     </div>
   )
 }
