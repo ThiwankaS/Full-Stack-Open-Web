@@ -38,9 +38,9 @@ const App = () => {
       <br/>
       <h3>Statistics</h3>
       <br/>
-      <Feedback text='good' stat={good}/>
-      <Feedback text='neutral' stat={neutral}/>
-      <Feedback text='bad' stat={bad}/>
+      <StatisticsLine text='good' value={good}/>
+      <StatisticsLine text='neutral' value={neutral}/>
+      <StatisticsLine text='bad' value={bad}/>
       <br/>
       <Statistics good={good} neutral={neutral} bad={bad} all={all} />
     </div>
@@ -54,10 +54,10 @@ const Button = (props) => {
   )
 }
 
-const Feedback = (props) => {
-  const { text,stat } = props; 
+const StatisticsLine = (props) => {
+  const { text,value } = props; 
   return (
-    <div>{text} : {stat} </div>
+    <div>{text} : {value} </div>
   )
 }
 
