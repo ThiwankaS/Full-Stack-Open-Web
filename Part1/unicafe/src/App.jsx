@@ -8,20 +8,43 @@ const App = () => {
   const [ good , setGood ] =  useState(0); 
   const [ neutral, setNeutral ] = useState(0);
   const [ bad, setBad ] = useState(0);  
+  const [ all, setAll ] = useState(0); 
 
+  const setGoodFeedbackCount = () => {
+    const newGoodCount = good + 1 ; 
+    setGood(newGoodCount); 
+    setAll(newGoodCount + neutral + bad); 
+  }
+
+  const setNeutralFeedbackCount = () => {
+    const newNeutralCount = neutral + 1 ; 
+    setNeutral(newNeutralCount); 
+    setAll(good + newNeutralCount + bad); 
+  }
+
+  const setBadFeednackCount = () => {
+    const newBadCount = bad + 1 ; 
+    setBad(newBadCount); 
+    setAll(good + neutral + newBadCount); 
+  }
+  
   return (
     <div>
       <h4>Give Feedback</h4>
       <br/>
-      <Button handelClick={() => setGood(good + 1)} text='good' />
-      <Button handelClick={() => setNeutral(neutral + 1)} text='neutral' />
-      <Button handelClick={() => setBad(bad + 1)} text='bad' />
+      <Button handelClick={setGoodFeedbackCount} text='good' />
+      <Button handelClick={setNeutralFeedbackCount} text='neutral' />
+      <Button handelClick={setBadFeednackCount} text='bad' />
       <br/>
       <h3>Statistics</h3>
       <br/>
       <Feedback text='good' stat={good}/>
       <Feedback text='neutral' stat={neutral}/>
       <Feedback text='bad' stat={bad}/>
+      <br/>
+      <div>all : {all}</div>
+      <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
+      <div>positive : { (good/all) * 100 } % </div>
     </div>
   )
 }
