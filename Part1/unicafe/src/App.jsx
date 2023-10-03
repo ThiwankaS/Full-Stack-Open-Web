@@ -63,13 +63,19 @@ const Feedback = (props) => {
 
 const Statistics = (props) => {
   const { good,neutral,bad,all } = props; 
-  return(
-    <div>
-      <div>all : {all}</div>
-      <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
-      <div>positive : { (good/all) * 100 } % </div>
-    </div>
-  )
+  if (all === 0){
+    return (
+      <div>No Feedback given!</div>
+    )
+  } else {
+    return(
+      <div>
+        <div>all : {all}</div>
+        <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
+        <div>positive : { (good/all) * 100 } % </div>
+      </div>
+    )
+  }
 } 
 
 export default App
