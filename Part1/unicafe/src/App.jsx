@@ -57,7 +57,16 @@ const Button = (props) => {
 const StatisticsLine = (props) => {
   const { text,value } = props; 
   return (
-    <div>{text} : {value} </div>
+    <div>
+      <table>
+        <tbody>
+        <tr>
+          <td>{text}</td>
+          <td>{value}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   )
 }
 
@@ -70,9 +79,22 @@ const Statistics = (props) => {
   } else {
     return(
       <div>
-        <div>all : {all}</div>
-        <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
-        <div>positive : { (good/all) * 100 } % </div>
+        <table>
+        <tbody>
+          <tr>
+            <td>all</td>
+            <td>{all}</td>
+          </tr>
+          <tr>
+            <td>average</td>
+            <td>{Math.floor((((good * 1) + (neutral * 0) + (bad * -1) )/all)*10)/10}</td>
+          </tr>
+          <tr>
+            <td>positive</td>
+            <td>{(good/all) * 100 } %</td>
+          </tr>
+          </tbody>
+          </table>
       </div>
     )
   }
