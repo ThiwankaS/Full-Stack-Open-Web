@@ -42,9 +42,7 @@ const App = () => {
       <Feedback text='neutral' stat={neutral}/>
       <Feedback text='bad' stat={bad}/>
       <br/>
-      <div>all : {all}</div>
-      <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
-      <div>positive : { (good/all) * 100 } % </div>
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} />
     </div>
   )
 }
@@ -62,5 +60,16 @@ const Feedback = (props) => {
     <div>{text} : {stat} </div>
   )
 }
+
+const Statistics = (props) => {
+  const { good,neutral,bad,all } = props; 
+  return(
+    <div>
+      <div>all : {all}</div>
+      <div>average : { ((good * 1) + (neutral * 0) + (bad * -1) )/all}</div>
+      <div>positive : { (good/all) * 100 } % </div>
+    </div>
+  )
+} 
 
 export default App
