@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg'
 const App = () => {
 
   const [ selected,setSelcted ] = useState(0); 
+  const [ voteCount,setVoteCount ] = useState([0,0,0,0,0,0,0,0]); 
 
 
   const anecdotes = [
@@ -23,10 +24,18 @@ const App = () => {
     setSelcted(randomeNumber); 
   }
 
+  const countVotes = () => {
+    const newVoteCount = [...voteCount];
+    newVoteCount[selected] += 1; 
+    setVoteCount(newVoteCount);
+  }
+
   return (
     <div>
       {anecdotes[selected]}
+      <p>has {voteCount[selected]} votes</p>
       <br/>
+      <button onClick={countVotes}>vote</button>
       <button onClick={handelClick}>next anecdote</button>
     </div>
   )
