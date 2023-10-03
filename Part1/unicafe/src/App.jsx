@@ -38,11 +38,26 @@ const App = () => {
       <br/>
       <h3>Statistics</h3>
       <br/>
-      <StatisticsLine text='good' value={good}/>
-      <StatisticsLine text='neutral' value={neutral}/>
-      <StatisticsLine text='bad' value={bad}/>
-      <br/>
-      <Statistics good={good} neutral={neutral} bad={bad} all={all} />
+      <table>
+        <tbody>
+        <StatisticsLine text='good' value={good}/>
+        <StatisticsLine text='neutral' value={neutral}/>
+        <StatisticsLine text='bad' value={bad}/>
+        {
+          all === 0 ? (
+            <tr>
+              <td>No Feedback given!</td>
+            </tr>
+          ): (
+            <>
+            <StatisticsLine text='all' value={all} />
+            <StatisticsLine text='average' value={Math.floor((((good * 1) + (neutral * 0) + (bad * -1) )/all)*10)/10} />
+            <StatisticsLine text='positive' value={ Math.floor(((good/all) * 100)*100)/100 + '%' } />
+            </>
+          ) 
+        }
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -57,47 +72,11 @@ const Button = (props) => {
 const StatisticsLine = (props) => {
   const { text,value } = props; 
   return (
-    <div>
-      <table>
-        <tbody>
         <tr>
           <td>{text}</td>
           <td>{value}</td>
         </tr>
-        </tbody>
-      </table>
-    </div>
   )
 }
-
-const Statistics = (props) => {
-  const { good,neutral,bad,all } = props; 
-  if (all === 0){
-    return (
-      <div>No Feedback given!</div>
-    )
-  } else {
-    return(
-      <div>
-        <table>
-        <tbody>
-          <tr>
-            <td>all</td>
-            <td>{all}</td>
-          </tr>
-          <tr>
-            <td>average</td>
-            <td>{Math.floor((((good * 1) + (neutral * 0) + (bad * -1) )/all)*10)/10}</td>
-          </tr>
-          <tr>
-            <td>positive</td>
-            <td>{(good/all) * 100 } %</td>
-          </tr>
-          </tbody>
-          </table>
-      </div>
-    )
-  }
-} 
 
 export default App
