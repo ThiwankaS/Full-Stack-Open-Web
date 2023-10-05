@@ -62,8 +62,7 @@ const Part = ({name,exercises}) => <p>{name} {exercises}</p>
 
 const Total = (prop) => {
   const {parts} = prop; 
-  const totalExcercise = parts[0].exercises + parts[1].exercises + parts[2].exercises + parts[3].exercises; 
-  console.log('Parts', parts); 
+  const totalExcercise = parts.reduce((sum,part)=> sum + part.exercises,0);  
   return(
     <p><strong>total of {totalExcercise} excercises</strong></p>
   )
