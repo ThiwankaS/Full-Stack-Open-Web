@@ -5,7 +5,8 @@ import viteLogo from '/vite.svg'
 
 const App = ()  => {
   
-  const course = {
+  const course = [
+    {
     id : 1,
     name : 'Half Stack application development',
     parts : [
@@ -30,7 +31,24 @@ const App = ()  => {
         id : 4
       }
     ]
+  },
+  {
+    name : 'Node.js',
+    id : 2, 
+    parts : [
+      {
+        name : 'Routing',
+        exercises : 3,
+        id :1
+      },
+      {
+        name : 'Middlewares',
+        exercises : 7,
+        id : 2
+      }
+    ]
   }
+ ]
 
   return <Course course={course} /> 
 }
@@ -38,14 +56,18 @@ const App = ()  => {
 const Course = ({course}) => {
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts}/>
-      <Total parts={course.parts} />
+      <h1>Web development curriculum</h1>
+      <Header course={course[0].name} />
+      <Content parts={course[0].parts}/>
+      <Total parts={course[0].parts} />
+      <Header course={course[1].name} />
+      <Content parts={course[1].parts}/>
+      <Total parts={course[1].parts} />
     </div>
   )
 }
 
-const Header = ({course}) => <h1>{course}</h1>
+const Header = ({course}) => <p style={{fontSize: '22px'}} ><strong>{course}</strong></p>
 
 const Content = (props) => {  
   const {parts} = props; 
@@ -64,7 +86,7 @@ const Total = (prop) => {
   const {parts} = prop; 
   const totalExcercise = parts.reduce((sum,part)=> sum + part.exercises,0);  
   return(
-    <p><strong>total of {totalExcercise} excercises</strong></p>
+    <p style={{fontSize: '18px'}}><strong>total of {totalExcercise} excercises</strong></p>
   )
 }
 
