@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Filter from './components/Filter';
+import PersonFrom from './components/PersonForm';
+import Persons from './components/Persons';
 
 const App = () => {
   //State declarionts 
   const [ person,setPerson ] = useState([
     { name : 'Alto Hellas', number : '040-123456', id : 1 },
     { name : 'Ada Lovelace',number : '39-44-5323523', id : 2 },
-    { name : 'Linus Torvalds', number : '045-1793030', id : 3},
-    { name : 'Dan Abramov', number : '12-43-234345', id : 4},
-    { name : 'Mary Poppendieck', number : '39-23-6423122', id : 5}
+    { name : 'Dan Abramov', number : '12-43-234345', id : 3},
+    { name : 'Mary Poppendieck', number : '39-23-6423122', id : 4}
   ]); 
   const [ newName,setNewName ] = useState(''); 
   const [ newNumber,setNewNumber ] = useState('');
@@ -25,13 +27,11 @@ const App = () => {
   const handelSearch = (event) => {
     if(event.target.value === ' '){
       setShowAll(true);
-      console.log('Inside handelSearch: if [person]',person); 
     } else {
       setSearch(event.target.value); 
       setShowAll(false); 
       const newPersonArray = person.slice();
       setFilteredList(newPersonArray.filter((person) => person.name.includes(search)));
-      console.log('Inside handelSearch: else [person]',person); 
     }
   }
   const addPerson = (event) => {
@@ -61,45 +61,16 @@ const App = () => {
       <h3>add a new</h3>
       <PersonFrom newName={newName} newNumber={newNumber} handelNameChange={handelNameChange} handelNumberChange={handelNumberChange} addPerson={addPerson}/>
       <h3>Numbers</h3>
-      <Person person={person} filteredList={filteredList} showAll={showAll}/>
-      <br/>
-      <div>Debug : {search}</div>
+      <Persons person={person} filteredList={filteredList} showAll={showAll}/>    
     </div>  
   )
 }
 
 export default App;
 
-const Person = (props) => {
-  const {person,filteredList,showAll} = props; 
-  return (
-    <div>{showAll? <Record person={person} /> : <Record person={filteredList} />}</div>
-  )
-}
 
-const Record = ({person}) => {
-  return (
-    <div>{person.map((person) => <p key={person.id}>{person.name} : {person.number}</p>)}</div>
-  )
-}
 
-const PersonFrom = (props) => {
-  const { newName,newNumber,handelNameChange,handelNumberChange,addPerson } = props; 
-  return(
-    <form onSubmit={addPerson}>
-        <div> name : <input id ="name" value={newName} onChange={handelNameChange}/> </div>
-        <div> number : <input id="number" value={newNumber} onChange={handelNumberChange}/> </div>
-        <div><button type="submit">add</button></div>
-    </form>
-  )
-}
 
-const Filter = (props) => {
-  const { search,handelSearch } = props; 
-  return(
-    <div>
-      filter shown with : <input id="search" value={search} onChange={handelSearch}/>
-    </div>
-  )
-}
+
+
 
