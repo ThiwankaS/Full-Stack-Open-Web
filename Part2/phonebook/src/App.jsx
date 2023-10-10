@@ -5,6 +5,9 @@ import Persons from './components/Persons';
 import axios from 'axios';
 
 const App = () => {
+
+  const url = "http://localhost:3001/persons";
+
   //State declarionts 
   const [ person,setPerson ] = useState([]); 
   const [ newName,setNewName ] = useState(''); 
@@ -15,7 +18,7 @@ const App = () => {
 
   //Importing data from the JSON server 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then(response => {
+    axios.get(url).then(response => {
       setPerson(response.data);
     })
   },[]);
@@ -51,9 +54,12 @@ const App = () => {
         number : newNumber,
         id : person.length + 1
       }
-      setPerson(person.concat(newPerson)); 
-      setNewName(''); 
-      setNewNumber('');
+      
+      axios.post(url,newPerson).then(response => {
+        setPerson(person.concat(response.data)); 
+        setNewName(''); 
+        setNewNumber('');
+      })
     }
   }
 
