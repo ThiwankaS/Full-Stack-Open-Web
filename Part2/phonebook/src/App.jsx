@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Filter from './components/Filter';
 import PersonFrom from './components/PersonForm';
 import Persons from './components/Persons';
+import personService from './services/person';
 import axios from 'axios';
 
 const App = () => {
@@ -18,9 +19,7 @@ const App = () => {
 
   //Importing data from the JSON server 
   useEffect(() => {
-    axios.get(url).then(response => {
-      setPerson(response.data);
-    })
+    personService.getAll().then(initialRecords => setPerson(initialRecords));
   },[]);
   
   //Event Handlers
@@ -55,8 +54,8 @@ const App = () => {
         id : person.length + 1
       }
       
-      axios.post(url,newPerson).then(response => {
-        setPerson(person.concat(response.data)); 
+      personService.createRecord(newPerson).then(record => {
+        setPerson(person.concat(record)); 
         setNewName(''); 
         setNewNumber('');
       })
