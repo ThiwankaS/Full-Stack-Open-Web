@@ -1,6 +1,7 @@
-const Record = ({person}) => {
+const Record = ({person,deleteRecord}) => {
+  const label = 'delete'; 
     return (
-      <div>{person.map((person) => <p key={person.id}>{person.name} : {person.number}</p>)}</div>
+      <div>{person.map((record) => <p key={record.id}>{record.name} : {record.number} <button onClick={() => deleteRecord(record)}>{label}</button></p>)}</div>
     )
   } 
 

@@ -1,9 +1,9 @@
 import Record from "./Record";
 
 const Persons = (props) => {
-    const {person,filteredList,showAll} = props; 
+    const {person,filteredList,showAll,deleteRecord} = props; 
     return (
-      <div>{showAll? <Record person={person} /> : <Record person={filteredList} />}</div>
+      <div>{showAll? <Record person={person} deleteRecord={deleteRecord}/> : <Record person={filteredList} deleteRecord={deleteRecord}/>}</div>
     )
   }
 

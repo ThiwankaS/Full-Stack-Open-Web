@@ -3,11 +3,9 @@ import Filter from './components/Filter';
 import PersonFrom from './components/PersonForm';
 import Persons from './components/Persons';
 import personService from './services/person';
-import axios from 'axios';
+
 
 const App = () => {
-
-  const url = "http://localhost:3001/persons";
 
   //State declarionts 
   const [ person,setPerson ] = useState([]); 
@@ -62,6 +60,13 @@ const App = () => {
     }
   }
 
+  const deleteRecordOf = (record) => {
+    let confirmation = window.confirm(`Delete ${record.name} ?`); 
+    if(confirmation){
+      personService.deleteRecord(record).then(setPerson(person.filter(item => item.id !== record.id)));
+    }
+  }
+
   return (
     <div>
       <h2>Phone Book</h2>
@@ -69,7 +74,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonFrom newName={newName} newNumber={newNumber} handelNameChange={handelNameChange} handelNumberChange={handelNumberChange} addPerson={addPerson}/>
       <h3>Numbers</h3>
-      <Persons person={person} filteredList={filteredList} showAll={showAll}/>    
+      <Persons person={person} filteredList={filteredList} showAll={showAll} deleteRecord={deleteRecordOf}/>    
     </div>  
   )
 }
