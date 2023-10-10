@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Filter from './components/Filter';
 import PersonFrom from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 import personService from './services/person';
 
 
@@ -14,6 +15,7 @@ const App = () => {
   const [ search,setSearch ] = useState(''); 
   const [ showAll,setShowAll ] = useState(true);  
   const [ filteredList,setFilteredList ] = useState([]); 
+  const [ message,setMessage ] = useState('Here is the message');
 
   //Importing data from the JSON server 
   useEffect(() => {
@@ -55,6 +57,11 @@ const App = () => {
           }
           personService.updateRecord(upDatedPerson).then(() => {
             setPerson(previousPerson => previousPerson.map(p => p.id === upDatedPerson.id ? upDatedPerson : p))
+          }).then(() => {
+            setMessage(`Number updated ${newNumber}`)
+            setTimeout(()=> {
+            setMessage(null)
+            },3000)
           });
         }
       }
@@ -71,6 +78,11 @@ const App = () => {
         setPerson(person.concat(record)); 
         setNewName(''); 
         setNewNumber('');
+      }).then(() => {
+        setMessage(`Added ${newName}`)
+        setTimeout(()=> {
+          setMessage(null)
+        },3000)
       })
     }
   }
@@ -85,6 +97,8 @@ const App = () => {
   return (
     <div>
       <h2>Phone Book</h2>
+      <Notification message={message} />
+      <br/>
       <Filter search={search} handelSearch={handelSearch}/>
       <h3>add a new</h3>
       <PersonFrom newName={newName} newNumber={newNumber} handelNameChange={handelNameChange} handelNumberChange={handelNumberChange} addPerson={addPerson}/>
