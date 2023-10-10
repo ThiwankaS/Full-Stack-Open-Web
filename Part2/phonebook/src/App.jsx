@@ -34,15 +34,30 @@ const App = () => {
       setSearch(event.target.value); 
       setShowAll(false); 
       const newPersonArray = person.slice();
-      setFilteredList(newPersonArray.filter((person) => person.name.includes(search)));
+      setFilteredList(newPersonArray.filter((p) => p.name.includes(search)));
     }
   }
   const addPerson = (event) => {
     event.preventDefault(); 
-    const nameAlreadyExist = (person.some(person => person.name === newName)); 
-    const numberAlreadyExist = (person.some(person => person.number === newNumber));
-    if(nameAlreadyExist || numberAlreadyExist){
-      nameAlreadyExist ? alert(`${newName} is already added to phonebook`): alert(`${newNumber} is already added to phonebook`);
+    const nameAlreadyExist = (person.some(p => p.name === newName)); 
+    const numberAlreadyExist = (person.some(p => p.number === newNumber));
+    const idOf = person.findIndex(p => p.name === newName) + 1;
+
+    if(nameAlreadyExist){
+      const existingPerson = person.find(p => p.name === newName);
+      const confirmation = window.confirm(`${newName} is already added to phonebook, replace the old number with the new one ?`);
+      if(confirmation){
+        if(numberAlreadyExist){
+          alert(`${newNumber} is also same as the old one !`); 
+        } else {
+          const upDatedPerson = {
+            ...existingPerson, number : newNumber
+          }
+          personService.updateRecord(upDatedPerson).then(() => {
+            setPerson(previousPerson => previousPerson.map(p => p.id === upDatedPerson.id ? upDatedPerson : p))
+          });
+        }
+      }
       setNewName('');
       setNewNumber('');
     } else {
@@ -63,7 +78,7 @@ const App = () => {
   const deleteRecordOf = (record) => {
     let confirmation = window.confirm(`Delete ${record.name} ?`); 
     if(confirmation){
-      personService.deleteRecord(record).then(setPerson(person.filter(item => item.id !== record.id)));
+      personService.deleteRecord(record).then(setPerson(person.filter(p => p.id !== record.id)));
     }
   }
 
