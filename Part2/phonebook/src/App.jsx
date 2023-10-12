@@ -8,6 +8,17 @@ import personService from './services/person';
 
 const App = () => {
 
+  const defaultMessage = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderColor: 'green',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
   //State declarionts 
   const [ person,setPerson ] = useState([]); 
   const [ newName,setNewName ] = useState(''); 
@@ -15,7 +26,8 @@ const App = () => {
   const [ search,setSearch ] = useState(''); 
   const [ showAll,setShowAll ] = useState(true);  
   const [ filteredList,setFilteredList ] = useState([]); 
-  const [ message,setMessage ] = useState('Here is the message');
+  const [ message,setMessage ] = useState(null);
+  const [ messageStyle,setMessageStyle ] = useState(defaultMessage);
 
   //Importing data from the JSON server 
   useEffect(() => {
@@ -58,10 +70,19 @@ const App = () => {
           personService.updateRecord(upDatedPerson).then(() => {
             setPerson(previousPerson => previousPerson.map(p => p.id === upDatedPerson.id ? upDatedPerson : p))
           }).then(() => {
+            const sucessfulStyle = {...messageStyle,color: 'green',borderColor: 'green'} 
+            setMessageStyle(sucessfulStyle); 
             setMessage(`Number updated ${newNumber}`)
             setTimeout(()=> {
             setMessage(null)
-            },3000)
+            },5000)
+          }).catch(error => {
+            const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
+            setMessageStyle(unsucessfulStyle); 
+            setMessage(`${upDatedPerson.name} already delete from the server`); 
+            setTimeout(()=> {
+            setMessage(null)
+            },5000)
           });
         }
       }
@@ -79,10 +100,12 @@ const App = () => {
         setNewName(''); 
         setNewNumber('');
       }).then(() => {
+        const sucessfulStyle = {...messageStyle,color: 'green',borderColor: 'green'} 
+        setMessageStyle(sucessfulStyle);
         setMessage(`Added ${newName}`)
         setTimeout(()=> {
           setMessage(null)
-        },3000)
+        },5000)
       })
     }
   }
@@ -90,14 +113,23 @@ const App = () => {
   const deleteRecordOf = (record) => {
     let confirmation = window.confirm(`Delete ${record.name} ?`); 
     if(confirmation){
-      personService.deleteRecord(record).then(setPerson(person.filter(p => p.id !== record.id)));
+      personService.deleteRecord(record).then(setPerson(person.filter(p => p.id !== record.id))).catch(
+        error => {
+          const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
+          setMessageStyle(unsucessfulStyle); 
+          setMessage(`${record.name} already delete from the server`); 
+          setTimeout(()=> {
+          setMessage(null)
+          },5000)
+        }
+      );
     }
   }
 
   return (
     <div>
       <h2>Phone Book</h2>
-      <Notification message={message} />
+      <Notification message={message} messageStyle={messageStyle}/>
       <br/>
       <Filter search={search} handelSearch={handelSearch}/>
       <h3>add a new</h3>
