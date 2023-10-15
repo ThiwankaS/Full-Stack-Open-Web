@@ -113,7 +113,15 @@ const App = () => {
   const deleteRecordOf = (record) => {
     let confirmation = window.confirm(`Delete ${record.name} ?`); 
     if(confirmation){
-      personService.deleteRecord(record).then(setPerson(person.filter(p => p.id !== record.id))).catch(
+      personService.deleteRecord(record).then(setPerson(person.filter(p => p.id !== record.id))).then(() => {
+        const sucessfulStyle = {...messageStyle,color: 'green',borderColor: 'green'} 
+        setMessageStyle(sucessfulStyle);
+        setMessage(`${record.name} sucessfully delete from the server`)
+        setTimeout(()=> {
+          setMessage(null)
+        },5000)
+        }
+      ).catch(
         error => {
           const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
           setMessageStyle(unsucessfulStyle); 
