@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'; 
+import Record from "./components/Record";
+import Country from "./components/Country";
 
 const App = () => {
 
@@ -7,9 +9,9 @@ const App = () => {
   const [ listToShow,setListToShow ] = useState([]); 
   const [ value,setValue ] = useState('');
   const [ message,setMessag ] = useState(``); 
+  const [ country,setCountry ] = useState(null); 
 
   const url = `https://restcountries.com/v3.1/all`;
-
 
   useEffect(() => {
     axios.get(url).then(response => setCountries(response.data)).catch(error => {
@@ -21,11 +23,10 @@ const App = () => {
     console.log(`Country list is ${tempList.length}`);
     if(tempList.length > 10){
       setMessag(`Too many matches, specify another filter`); 
-    } else {
+    } else if(tempList.length < 10 && tempList.length > 1) {
       setListToShow(tempList);
       setMessag('');
     }
-
   },[value]) 
 
   const handelChange = (event) => {
@@ -40,21 +41,10 @@ const App = () => {
       </form>
       <br/>
       <p>{message}</p>
-      <Record countryList={listToShow}/>
+      <Record countryList={listToShow} handelClick={setCountry}/>
+      {country ? <Country country={country} /> : null}
     </div>
   )
 }
 
 export default App; 
-
-const Record = ({countryList}) => {
-
-  const lineStyle = {
-    fontSize : 16,
-    margin : 0.8
-  }
-
-  return(
-    countryList.map(country => <p style={lineStyle} key={country.name.common}>{country.name.common}</p>)
-  )
-}
