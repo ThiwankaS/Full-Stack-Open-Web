@@ -1,4 +1,6 @@
-const Country = ({country}) => {
+import Weather from "./Weather";
+
+const Country = ({country,weather,city}) => {
 
     return(
       <div>
@@ -8,6 +10,7 @@ const Country = ({country}) => {
             <p>Languages:</p>
             <ul>{Object.values(country.languages).map((language,id) => (<li key={id}>{language}</li>))}</ul>
             <img src={country.flags.png} alt={`Flag of ${country.name.common}`} />
+            {Weather ? <Weather data={weather} city={city}/> : null }
       </div>
     )
   }
