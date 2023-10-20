@@ -15,7 +15,7 @@ const App = () => {
   const [ weather,setWeather ] = useState(null); 
   const [ city,setCity ] = useState(`Helsinki`); 
 
-  const API_KEY = `dd5b8801fd028534387b8c0671b2d56a`;
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY; 
 
   const urlCountryData = `https://restcountries.com/v3.1/all`;
   const urlWeatherData = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`; 
