@@ -57,18 +57,25 @@ app.get('/api/persons/:id',(request,response) => {
 app.delete('/api/persons/:id',(request,response) => {
     const id = Number(request.params.id);
     persons = persons.filter(person => person.id !== id); 
-    response.json(204).end();
+    response.status(204).end();
 })
 
-app.post('/api/persons',(request,response)=>{
+app.post('/api/persons',(request,response) => {
     const body = request.body; 
-    const person = {
-        id : generateId(),
-        name : body.name,
-        number : body.number
-    }
-    persons = persons.concat(person); 
-    response.json(person); 
+    if (!body.name ){
+        return response.status(400).json({error : `name is missing`});
+    } else if (!body.number){
+        return response.status(400).json({error : `number is missing`});
+    } else if (persons.some(person => person.name === body.name)) {
+        return response.status(409).json({error : `name already exists`});
+    } else {
+            const person = {
+            id : generateId(),
+            name : body.name,
+            number : body.number}
+        persons = persons.concat(person); 
+        response.json(person);
+    } 
 });
 
 const PORT = 3001; 

@@ -5,3 +5,21 @@ Content-Type: application/json
     "name" : "Thiwanka Somachandra",
     "number" : "+358 123 4567"
 }
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name" : "",
+    "number" : "+358 123 4567"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name" : "Kaushalya Roshini",
+    "number" : ""
+}
