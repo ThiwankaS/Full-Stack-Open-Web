@@ -45,7 +45,7 @@ const generateId = () => {
         return id; 
     }
 }
-
+//get all the rcords from the DB 
 app.get('/api/persons',(request,response) => {
     Person.find({}).then((record)=>{
         response.json(record);
@@ -71,22 +71,22 @@ app.delete('/api/persons/:id',(request,response) => {
     persons = persons.filter(person => person.id !== id); 
     response.status(204).end();
 })
-
+//save record to DB 
 app.post('/api/persons',(request,response) => {
     const body = request.body; 
-    if (!body.name ){
+    if (!body.name) {
         return response.status(400).json({error : `name is missing`});
-    } else if (!body.number){
+    } else if (!body.number) {
         return response.status(400).json({error : `number is missing`});
-    } else if (persons.some(person => person.name === body.name)) {
-        return response.status(409).json({error : `name already exists`});
     } else {
-            const person = {
-            id : generateId(),
-            name : body.name,
-            number : body.number}
-        persons = persons.concat(person); 
-        response.json(person);
+            const person = new Person(
+            {
+                name : body.name,
+                number : body.number
+            });
+        person.save().then((savedRecord)=>{
+            response.json(savedRecord);
+        });
     }
 });
 
