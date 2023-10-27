@@ -36,20 +36,13 @@ let persons = [
     }
 ]; 
 
-const generateId = () => {
-    const id = Math.floor(((Math.random() * 50 )  )+ 1 /50); 
-    const exists = persons.find(person => person.id === id); 
-    if(exists) {
-        return generateId(); 
-    } else {
-        return id; 
-    }
-}
 //get all the rcords from the DB 
 app.get('/api/persons',(request,response) => {
-    Person.find({}).then((record)=>{
+    Person.find({}).then(record => {
         response.json(record);
-    });
+    }).catch(error => {
+        console.error('error in retreving data from DB'); 
+    })
 })
 
 app.get('/info',(request,response) => {
@@ -65,11 +58,13 @@ app.get('/api/persons/:id',(request,response) => {
         response.status(404).end(); 
     }
 })
-
+//delete a record from DB
 app.delete('/api/persons/:id',(request,response) => {
-    const id = Number(request.params.id);
-    persons = persons.filter(person => person.id !== id); 
-    response.status(204).end();
+    Person.findByIdAndRemove(request.params.id).then(result => {
+        response.status(204).end(); 
+    }).catch(error => {
+        console.error('error deleting record')
+    })
 })
 //save record to DB 
 app.post('/api/persons',(request,response) => {
@@ -86,11 +81,13 @@ app.post('/api/persons',(request,response) => {
             });
         person.save().then((savedRecord)=>{
             response.json(savedRecord);
-        });
+        }).catch(error => {
+            console.error('error is saving record to DB')
+        })
     }
 });
 
 const PORT = process.env.PORT;
-app.listen(PORT,()=>{
+app.listen(PORT,() => {
     console.log(`Server running on ${PORT}`);
 }); 
