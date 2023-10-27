@@ -67,7 +67,7 @@ app.get('/api/persons/:id',(request,response) => {
     }
 })
 //delete a record from DB
-app.delete('/api/persons/:id',(request,response) => {
+app.delete('/api/persons/:id',(request,response,next) => {
     Person.findByIdAndRemove(request.params.id).then(result => {
         response.status(204).end(); 
     }).catch(error => {
@@ -75,7 +75,7 @@ app.delete('/api/persons/:id',(request,response) => {
     })
 })
 //save record to DB 
-app.post('/api/persons',(request,response) => {
+app.post('/api/persons',(request,response,next) => {
     const body = request.body; 
     if (!body.name) {
         return response.status(400).json({error : `name is missing`});
@@ -87,15 +87,25 @@ app.post('/api/persons',(request,response) => {
                 name : body.name,
                 number : body.number
             });
-        person.save().then((savedRecord)=>{
+        person.save().then(savedRecord => {
             response.json(savedRecord);
         }).catch(error => {
             next(error);
         })
     }
 });
+//update a record
+app.put('/api/persons/:id',(request, response, next) => {
+    const body = request.body; 
+    Person.findByIdAndUpdate(request.params.id,{ number : body.number }).then(updatedRecord => {
+        response.json(updatedRecord); 
+    }).catch(error => {
+        next(error); 
+    })
+})
 
 const PORT = process.env.PORT;
 app.listen(PORT,() => {
     console.log(`Server running on ${PORT}`);
 }); 
+
