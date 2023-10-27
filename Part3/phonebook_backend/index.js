@@ -9,9 +9,17 @@ app.use(express.json());
 app.use(express.static('dist'));
 app.use(cors());
 
+
 morgan.token('body', (request) => JSON.stringify(request.body));
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));  
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message); 
+    next(error); 
+}
+
+app.use(errorHandler); 
 
 let persons = [
     { 
@@ -37,11 +45,11 @@ let persons = [
 ]; 
 
 //get all the rcords from the DB 
-app.get('/api/persons',(request,response) => {
+app.get('/api/persons',(request, response, next) => {
     Person.find({}).then(record => {
         response.json(record);
     }).catch(error => {
-        console.error('error in retreving data from DB'); 
+        next(error); 
     })
 })
 
@@ -63,7 +71,7 @@ app.delete('/api/persons/:id',(request,response) => {
     Person.findByIdAndRemove(request.params.id).then(result => {
         response.status(204).end(); 
     }).catch(error => {
-        console.error('error deleting record')
+        next(error);
     })
 })
 //save record to DB 
@@ -82,7 +90,7 @@ app.post('/api/persons',(request,response) => {
         person.save().then((savedRecord)=>{
             response.json(savedRecord);
         }).catch(error => {
-            console.error('error is saving record to DB')
+            next(error);
         })
     }
 });
