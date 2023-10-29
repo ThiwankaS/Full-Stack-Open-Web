@@ -14,12 +14,13 @@ morgan.token('body', (request) => JSON.stringify(request.body));
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));  
 
-const errorHandler = (error, request, response, next) => {
-    console.error(error.message); 
-    next(error); 
-}
+app.use((error, request, response, next) => {
+    if(error.name === 'ValidationError'){
+        return response.status(400).json({ error : error.message })
+    }
+    next(error);
+})
 
-app.use(errorHandler); 
  
 //get all the rcords from the DB 
 app.get('/api/persons',(request, response, next) => {
@@ -68,7 +69,7 @@ app.post('/api/persons',(request,response,next) => {
             });
         person.save().then(savedRecord => {
             response.json(savedRecord);
-        }).catch(error => {
+        }).catch(error=> {
             next(error);
         })
     }
@@ -86,5 +87,6 @@ app.put('/api/persons/:id',(request, response, next) => {
 const PORT = process.env.PORT;
 app.listen(PORT,() => {
     console.log(`Server running on ${PORT}`);
+    console.log('-------------------------');
 }); 
 

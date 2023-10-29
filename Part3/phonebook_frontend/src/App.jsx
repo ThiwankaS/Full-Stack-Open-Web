@@ -77,6 +77,8 @@ const App = () => {
             setMessage(null)
             },5000)
           }).catch(error => {
+            console.log('Inside : personService : updateRecord',error.message);
+            console.log('-------------------------');
             const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
             setMessageStyle(unsucessfulStyle); 
             setMessage(`${upDatedPerson.name} already delete from the server`); 
@@ -106,6 +108,13 @@ const App = () => {
         setTimeout(()=> {
           setMessage(null)
         },5000)
+      }).catch(error => {
+        const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
+        setMessageStyle(unsucessfulStyle); 
+        setMessage(error.response.data.error || 'ValidationError: Person validation failed'); 
+        setTimeout(()=> {
+        setMessage(null)
+        },5000)
       })
     }
   }
@@ -121,8 +130,9 @@ const App = () => {
           setMessage(null)
         },5000)
         }
-      ).catch(
-        error => {
+      ).catch(error => {
+        console.log('Inside : personService : deleteRecord',error.message);
+        console.log('-------------------------');
           const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
           setMessageStyle(unsucessfulStyle); 
           setMessage(`${record.name} already delete from the server`); 
@@ -149,8 +159,6 @@ const App = () => {
 }
 
 export default App;
-
-
 
 
 
