@@ -85,7 +85,7 @@ const App = () => {
             displayNotification(color,message);
           }).catch(error => {
             const color = 'red';
-            const message = `${upDatedPerson.name} already delete from the server`;
+            const message = error.response.data.error; 
             displayNotification(color,message);
           });
         }
