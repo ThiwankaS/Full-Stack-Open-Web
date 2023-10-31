@@ -1,8 +1,10 @@
 require('dotenv').config();
+
 const express = require('express'); 
 const morgan = require('morgan');
 const cors = require('cors'); 
-const Person = require('./model/person') 
+const Person = require('./model/person');
+const ErrorHandler = require('./middleware/errorHandler');
 
 const app = express(); 
 app.use(express.json());
@@ -14,12 +16,7 @@ morgan.token('body', (request) => JSON.stringify(request.body));
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));  
 
-app.use((error, request, response, next) => {
-    if(error.name === 'ValidationError'){
-        return response.status(400).json({ error : error.message })
-    }
-    next(error);
-})
+
 
  
 //get all the rcords from the DB 
@@ -67,11 +64,13 @@ app.post('/api/persons',(request,response,next) => {
                 name : body.name,
                 number : body.number
             });
-        person.save().then(savedRecord => {
-            response.json(savedRecord);
-        }).catch(error=> {
-            next(error);
-        })
+        person.save()
+            .then(savedRecord => {
+                response.json(savedRecord);
+            })
+            .catch(error=> {
+                next(error);
+            })
     }
 });
 //update a record
@@ -84,9 +83,13 @@ app.put('/api/persons/:id',(request, response, next) => {
     })
 })
 
+
+app.use(ErrorHandler);
 const PORT = process.env.PORT;
 app.listen(PORT,() => {
     console.log(`Server running on ${PORT}`);
     console.log('-------------------------');
 }); 
+
+
 

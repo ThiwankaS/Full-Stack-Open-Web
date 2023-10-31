@@ -51,6 +51,16 @@ const App = () => {
       setFilteredList(newPersonArray.filter((p) => p.name.includes(search)));
     }
   }
+
+  const displayNotification = (color,message) => {
+    const updatedStyle = {...messageStyle,color: color ,borderColor: color} 
+      setMessageStyle(updatedStyle); 
+      setMessage(message)
+      setTimeout(()=> {
+            setMessage(null)
+      },5000)
+  }
+
   const addPerson = (event) => {
     event.preventDefault(); 
     const nameAlreadyExist = (person.some(p => p.name === newName)); 
@@ -70,21 +80,13 @@ const App = () => {
           personService.updateRecord(upDatedPerson).then(() => {
             setPerson(previousPerson => previousPerson.map(p => p.id === upDatedPerson.id ? upDatedPerson : p))
           }).then(() => {
-            const sucessfulStyle = {...messageStyle,color: 'green',borderColor: 'green'} 
-            setMessageStyle(sucessfulStyle); 
-            setMessage(`Number updated ${newNumber}`)
-            setTimeout(()=> {
-            setMessage(null)
-            },5000)
+            const color = 'green';
+            const message = `Number updated ${newNumber}`;
+            displayNotification(color,message);
           }).catch(error => {
-            console.log('Inside : personService : updateRecord',error.message);
-            console.log('-------------------------');
-            const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
-            setMessageStyle(unsucessfulStyle); 
-            setMessage(`${upDatedPerson.name} already delete from the server`); 
-            setTimeout(()=> {
-            setMessage(null)
-            },5000)
+            const color = 'red';
+            const message = `${upDatedPerson.name} already delete from the server`;
+            displayNotification(color,message);
           });
         }
       }
@@ -102,19 +104,13 @@ const App = () => {
         setNewName(''); 
         setNewNumber('');
       }).then(() => {
-        const sucessfulStyle = {...messageStyle,color: 'green',borderColor: 'green'} 
-        setMessageStyle(sucessfulStyle);
-        setMessage(`Added ${newName}`)
-        setTimeout(()=> {
-          setMessage(null)
-        },5000)
+        const color = 'green';
+        const message = `Added ${newName}`;
+        displayNotification(color,message);
       }).catch(error => {
-        const unsucessfulStyle = {...messageStyle,color: 'red',borderColor: 'red'} 
-        setMessageStyle(unsucessfulStyle); 
-        setMessage(error.response.data.error || 'ValidationError: Person validation failed'); 
-        setTimeout(()=> {
-        setMessage(null)
-        },5000)
+        const color = 'red';
+        const message = error.response.data.error; 
+        displayNotification(color,message);
       })
     }
   }
@@ -159,8 +155,3 @@ const App = () => {
 }
 
 export default App;
-
-
-
-
-
