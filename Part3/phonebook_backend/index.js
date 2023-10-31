@@ -76,7 +76,7 @@ app.post('/api/persons',(request,response,next) => {
 //update a record
 app.put('/api/persons/:id',(request, response, next) => {
     const body = request.body; 
-    Person.findByIdAndUpdate(request.params.id,{ number : body.number }).then(updatedRecord => {
+    Person.findByIdAndUpdate(request.params.id,{ number : body.number },{ new : true, runValidators : true, context : 'query' }).then(updatedRecord => {
         response.json(updatedRecord); 
     }).catch(error => {
         next(error); 
