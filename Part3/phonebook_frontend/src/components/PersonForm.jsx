@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const PersonFrom = (props) => {
     const { newName,newNumber,handelNameChange,handelNumberChange,addPerson } = props; 
     return(

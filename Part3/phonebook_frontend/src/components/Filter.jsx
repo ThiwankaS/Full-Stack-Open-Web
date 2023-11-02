@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const Filter = (props) => {
     const { search,handelSearch } = props; 
     return(

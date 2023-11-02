@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const Record = ({person,deleteRecord}) => {
   const label = 'delete'; 
     return (

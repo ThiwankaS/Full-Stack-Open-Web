@@ -65,7 +65,6 @@ const App = () => {
     event.preventDefault(); 
     const nameAlreadyExist = (person.some(p => p.name === newName)); 
     const numberAlreadyExist = (person.some(p => p.number === newNumber));
-    const idOf = person.findIndex(p => p.name === newName) + 1;
 
     if(nameAlreadyExist){
       const existingPerson = person.find(p => p.name === newName);

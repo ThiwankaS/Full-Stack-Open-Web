@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Record from "./Record";
 
 const Persons = (props) => {
