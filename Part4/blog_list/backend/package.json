@@ -6,11 +6,16 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "build:ui": "rm -rf dist && cd ../frontend/ && npm run build && cp -r dist ../backend",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs"
   },
   "author": "Thiwanka Somachandra",
   "license": "MIT",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.10",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1"
   },
