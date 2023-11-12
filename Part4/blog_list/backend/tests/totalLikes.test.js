@@ -1,8 +1,8 @@
 const totalLikes = require('../utils/list_helper').totalLikes
+const favoriteBlog = require('../utils/list_helper').favoriteBlog
 
-describe('total likes',() => {
-    const listWithZeroBlog = []
-    const listWithOneBlog = [
+const listWithZeroBlog = []
+const listWithOneBlog = [
         {
           _id: '5a422aa71b54a676234d17f8',
           title: 'Go To Statement Considered Harmful',
@@ -12,7 +12,7 @@ describe('total likes',() => {
           __v: 0
         }
       ]
-      const blogs = [
+const blogs = [
         {
           _id: "5a422a851b54a676234d17f7",
           title: "React patterns",
@@ -63,6 +63,8 @@ describe('total likes',() => {
         }  
       ]
 
+describe('total likes',() => {
+    
     test('of empty list is zero',() => {
         const result = totalLikes(listWithZeroBlog)
         expect(result).toBe(0)
@@ -76,5 +78,31 @@ describe('total likes',() => {
     test('of a bigger list is calculated right',() => {
         const result = totalLikes(blogs)
         expect(result).toBe(36)
+    })
+})
+
+describe('favorite blog',() => {
+    test('of empty list is an empty object',() => {
+        const expectedResult = {}
+        const result = favoriteBlog(listWithZeroBlog)
+        expect(result).toEqual(expectedResult)
+    })
+    test('when list has only one blog, equals the same list item',() => {
+        const expectedResult = {
+            title: 'Go To Statement Considered Harmful',
+            author: 'Edsger W. Dijkstra',
+            likes: 5
+        }
+        const result = favoriteBlog(listWithOneBlog)
+        expect(result).toEqual(expectedResult)
+    })
+    test('of a bigger list is retunred the correct list item',() => {
+        const expectedResult = {
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            likes: 12,
+        }
+        const result = favoriteBlog(blogs)
+        expect(result).toEqual(expectedResult)
     })
 })
