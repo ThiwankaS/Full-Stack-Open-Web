@@ -2,31 +2,9 @@ import { useState,useEffect } from 'react'
 import BlogForm from './components/BlogForm'
 import BlogDisplay from './components/BlogDisplay'
 import blogService from './service/blog'
+import './App.css'
 
 const App = () => {
-  const list = [
-    {
-        id : 1,
-        title: "MongoDB",
-        author: "Kaushalya Roshini",
-        url: "wwww.cloud.mongodb.com",
-        likes: 2000
-    },
-    {
-        id : 2,
-        title: "Express.JS",
-        author: "Thiwanka Somachandra",
-        url: "www.expressjs.com",
-        likes: 3000
-    },
-    {
-        id : 3,
-        title: "JavaScript",
-        author: "Liisa Marttinen",
-        url: "www.fullstackopen.com",
-        likes: 6560,
-    }
-]
 
   const [ blogListItem,setBlogListItem ] = useState({
         title: "",
@@ -55,7 +33,6 @@ const App = () => {
   }
   return (
     <div>
-      <h2>Blog List App</h2>
       <BlogForm blogListItem={blogListItem} setBlogListItem={setBlogListItem} handelSubmit={handelSubmit}/>
       <br />
       <BlogDisplay list={listToDisplay}/>
