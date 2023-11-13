@@ -1,5 +1,6 @@
 const totalLikes = require('../utils/list_helper').totalLikes
 const favoriteBlog = require('../utils/list_helper').favoriteBlog
+const mostBlogs = require('../utils/list_helper').mostBlogs
 
 const listWithZeroBlog = []
 const listWithOneBlog = [
@@ -105,4 +106,28 @@ describe('favorite blog',() => {
         const result = favoriteBlog(blogs)
         expect(result).toEqual(expectedResult)
     })
+})
+
+describe('most blogs',() => {
+    test('of empty list, should retrun an empty object',() => {
+        const expectedResult = {}
+        const result = mostBlogs(listWithZeroBlog)
+        expect(result).toEqual(expectedResult)
+    })
+    test('when list has only one blog, equals the same list item',() => {
+        const expectedResult = {
+            author: 'Edsger W. Dijkstra',
+            blogs : 1
+        }
+        const result = mostBlogs(listWithOneBlog)
+        expect(result).toEqual(expectedResult)
+    })
+    test('of a bigger list is retunred the correct list item',() => {
+      const expectedResult = {
+            author: "Robert C. Martin",
+            blogs : 3
+      }
+      const result = mostBlogs(blogs)
+      expect(result).toEqual(expectedResult)
+  })
 })
