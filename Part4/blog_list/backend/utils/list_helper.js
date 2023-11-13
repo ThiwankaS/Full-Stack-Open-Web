@@ -36,9 +36,7 @@ const mostBlogs = (blogs) => {
         
         const listOfAuthors = _.groupBy(blogs,'author')
         const list = _.keys(listOfAuthors)
-        console.log('list',list)
         const whoHasTheMostNoOfBlogs = _.maxBy(list,(author) => listOfAuthors[author].length)
-        console.log('author',whoHasTheMostNoOfBlogs)
         const noOfBlogs = listOfAuthors[whoHasTheMostNoOfBlogs].length
         return {
                 author : whoHasTheMostNoOfBlogs,
@@ -47,6 +45,18 @@ const mostBlogs = (blogs) => {
     }
 }
 
+const mostLikes = (blogs) => {
+    if(blogs.length === 0){
+        return {}
+    } else {
+        const blogWithMostLikes = _.maxBy(blogs,'likes')
+        return {
+            author : blogWithMostLikes.author,
+            likes : blogWithMostLikes.likes
+        }
+    }
+}
+
 module.exports = {
-    dummy,totalLikes,favoriteBlog,mostBlogs
+    dummy,totalLikes,favoriteBlog,mostBlogs,mostLikes
 }
