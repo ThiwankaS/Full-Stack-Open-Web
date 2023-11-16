@@ -80,6 +80,17 @@ const blogs = [
       expect(selectedRecord.likes).toBe(0)
     })  
 
+    test('Bad Request (400) - title and url infromation missing', async () => {
+      const newBlogList = {
+        author: "Mehmood Ghaffar",
+        likes : 5
+      }
+      await api 
+          .post('/api/blogs')
+          .send(newBlogList)
+          .expect(400)
+    })
+
     afterAll(async () => {
         await mongoose.connection.close()
     })
