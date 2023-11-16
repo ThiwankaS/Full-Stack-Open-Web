@@ -32,7 +32,7 @@ const blogs = [
         await blogObject.save()
     })
     
-    test('returns the correct amount of blog posts in the JSON format', async () => {
+    test('return the correct amount of blog posts in the JSON format', async () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(blogs.length)
         await api.get('/api/blogs')
@@ -40,13 +40,13 @@ const blogs = [
             .expect('Content-Type',/application\/json/)
     })
 
-    test('verifies that the unique identifier property of the blog posts is named id', async () => {
+    test('verify the unique identifier property of the blog posts is named id', async () => {
       const response = await api.get('/api/blogs')
 
       expect(response.body[0].id).toBeDefined()
     })
 
-    test('successfully creates a new blog post', async () => {
+    test('add a new blog post list successfully', async () => {
       const newBlogList = {
           title: "Ultimate Guide on How to Delete Commit History in Github",
           author: "Mehmood Ghaffar",
@@ -64,6 +64,22 @@ const blogs = [
       expect(titles).toContain('Ultimate Guide on How to Delete Commit History in Github')
     })
     
+    test('dafault value for the likes property is 0', async () => {
+      const newBlogList = {
+        title: "Ultimate Guide on How to Delete Commit History in Github",
+        author: "Mehmood Ghaffar",
+        url: "https://medium.com/@mgm06bm/ultimate-guide-on-how-to-delete-commit-history-in-github-35cc11d74571"
+      }
+      await api 
+          .post('/api/blogs')
+          .send(newBlogList)
+          .expect(201)
+          .expect('Content-Type',/application\/json/)
+      const response = await api.get('/api/blogs')
+      const selectedRecord = response.body.find(r => r.title === newBlogList.title)
+      expect(selectedRecord.likes).toBe(0)
+    })  
+
     afterAll(async () => {
         await mongoose.connection.close()
     })
