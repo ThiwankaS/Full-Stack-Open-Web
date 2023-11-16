@@ -39,6 +39,12 @@ const blogs = [
             .expect(200)
             .expect('Content-Type',/application\/json/)
     })
+
+    test('verifies that the unique identifier property of the blog posts is named id', async () => {
+      const response = await api.get('/api/blogs')
+      console.log('response',response.body[0].id)
+      expect(response.body[0].id).toBeDefined()
+    })
     
     afterAll(async () => {
         await mongoose.connection.close()

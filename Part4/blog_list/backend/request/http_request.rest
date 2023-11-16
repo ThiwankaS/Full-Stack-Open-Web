@@ -28,3 +28,5 @@ Content-Type: application/json
     "url": "https://www.coursera.org/articles/what-is-shell-scripting",
     "likes": 5000
 }
+###
+GET http://localhost:3003/api/blogs
