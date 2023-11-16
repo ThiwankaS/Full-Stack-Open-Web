@@ -42,8 +42,26 @@ const blogs = [
 
     test('verifies that the unique identifier property of the blog posts is named id', async () => {
       const response = await api.get('/api/blogs')
-      console.log('response',response.body[0].id)
+
       expect(response.body[0].id).toBeDefined()
+    })
+
+    test('successfully creates a new blog post', async () => {
+      const newBlogList = {
+          title: "Ultimate Guide on How to Delete Commit History in Github",
+          author: "Mehmood Ghaffar",
+          url: "https://medium.com/@mgm06bm/ultimate-guide-on-how-to-delete-commit-history-in-github-35cc11d74571",
+          likes: 4,
+      }
+      await api
+          .post('/api/blogs')
+          .send(newBlogList)
+          .expect(201)
+          .expect('Content-Type',/application\/json/)
+      const response = await api.get('/api/blogs')
+      const titles = response.body.map(r => r.title)
+      expect(response.body).toHaveLength(blogs.length + 1)
+      expect(titles).toContain('Ultimate Guide on How to Delete Commit History in Github')
     })
     
     afterAll(async () => {
