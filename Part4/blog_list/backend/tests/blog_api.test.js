@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('bufferTimeoutMS',30000)
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
@@ -23,7 +24,6 @@ const blogs = [
     }
   ]
 
-describe('api test',() => {
     beforeEach(async () => {
         await Blog.deleteMany({})
         let blogObject = new Blog(blogs[0])
@@ -43,5 +43,4 @@ describe('api test',() => {
     afterAll(async () => {
         await mongoose.connection.close()
     })
-})
 
