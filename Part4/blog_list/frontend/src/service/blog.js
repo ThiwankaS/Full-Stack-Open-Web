@@ -12,4 +12,9 @@ const creatRecord = (newRecord) => {
     return request.then(response => response.data)
 }
 
-export default { getAll,creatRecord }
+const deleteRecord = (record) => {
+    const request = axios.delete(`${baseUrl}/${record.id}`)
+    return request.then(response => response.data)
+}
+
+export default { getAll,creatRecord,deleteRecord }

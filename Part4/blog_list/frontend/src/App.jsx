@@ -31,11 +31,18 @@ const App = () => {
       })
     })
   }
+
+  const deleteRecordOf = (record) => {
+    let confirmation = window.confirm(`Are you sure ? You want to delete ${record.title}`)
+    if(confirmation) {
+      blogService.deleteRecord(record).then(setListToDisplay(listToDisplay.filter(p => p.id !== record.id)))
+    } 
+  }
   return (
     <div>
       <BlogForm blogListItem={blogListItem} setBlogListItem={setBlogListItem} handelSubmit={handelSubmit}/>
       <br />
-      <BlogDisplay list={listToDisplay}/>
+      <BlogDisplay list={listToDisplay} deleteRecord={deleteRecordOf}/>
     </div>
   )
 }

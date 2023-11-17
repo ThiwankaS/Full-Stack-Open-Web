@@ -32,7 +32,7 @@ const blogs = [
         await blogObject.save()
     })
     
-    test('return the correct amount of blog posts in the JSON format', async () => {
+    test('return the correct amount of blog post resource in the JSON format', async () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(blogs.length)
         await api.get('/api/blogs')
@@ -40,13 +40,13 @@ const blogs = [
             .expect('Content-Type',/application\/json/)
     })
 
-    test('verify the unique identifier property of the blog posts is named id', async () => {
+    test('verify the unique identifier property of the blog post resource is named id', async () => {
       const response = await api.get('/api/blogs')
 
       expect(response.body[0].id).toBeDefined()
     })
 
-    test('add a new blog post list successfully', async () => {
+    test('add a new blog post resource successfully', async () => {
       const newBlogList = {
           title: "Ultimate Guide on How to Delete Commit History in Github",
           author: "Mehmood Ghaffar",
@@ -80,7 +80,7 @@ const blogs = [
       expect(selectedRecord.likes).toBe(0)
     })  
 
-    test('Bad Request (400) - title and url infromation missing', async () => {
+    test('bad Request (400) - infromation missing for blog post resource', async () => {
       const newBlogList = {
         author: "Mehmood Ghaffar",
         likes : 5
@@ -89,6 +89,18 @@ const blogs = [
           .post('/api/blogs')
           .send(newBlogList)
           .expect(400)
+    })
+
+    test('delete a single blog post resource', async () => {
+      const listAtStart = await Blog.find({})
+      const selectedItem = listAtStart[0]
+      await api
+          .delete(`/api/blogs/${selectedItem.id}`)
+          .expect(204)
+      const listAtEnd = await Blog.find({})
+      const contents = listAtEnd.map(r => r.title)
+      expect(listAtEnd).toHaveLength(listAtStart.length - 1)
+      expect(contents).not.toContain(selectedItem.title)
     })
 
     afterAll(async () => {
