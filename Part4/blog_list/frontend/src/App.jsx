@@ -35,14 +35,27 @@ const App = () => {
   const deleteRecordOf = (record) => {
     let confirmation = window.confirm(`Are you sure ? You want to delete ${record.title}`)
     if(confirmation) {
-      blogService.deleteRecord(record).then(setListToDisplay(listToDisplay.filter(p => p.id !== record.id)))
+      blogService.deleteRecord(record).then(
+        setListToDisplay(listToDisplay.filter(p => p.id !== record.id))
+        )
     } 
   }
+
+  const updateRecordOf = (record) => {
+    let likes = window.prompt(`Enter new liks to update : `)
+    if(likes){
+      const updatedRecord = {...record, likes : likes } 
+      blogService.updateRecord(record.id,updatedRecord).then(
+        blogService.getAll().then(updatedRecords => setListToDisplay(updatedRecords))
+      )
+    }
+  }
+
   return (
     <div>
       <BlogForm blogListItem={blogListItem} setBlogListItem={setBlogListItem} handelSubmit={handelSubmit}/>
       <br />
-      <BlogDisplay list={listToDisplay} deleteRecord={deleteRecordOf}/>
+      <BlogDisplay list={listToDisplay} deleteRecord={deleteRecordOf} updateRecord={updateRecordOf}/>
     </div>
   )
 }

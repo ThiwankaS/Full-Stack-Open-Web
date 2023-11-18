@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3003/api/blogs'
+const baseUrl = '/api/blogs'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -17,4 +17,9 @@ const deleteRecord = (record) => {
     return request.then(response => response.data)
 }
 
-export default { getAll,creatRecord,deleteRecord }
+const updateRecord = (id,updatedRecord) => {
+    const request = axios.put(`${baseUrl}/${id}`,updatedRecord)
+    return request.then(response => response.data)
+}
+
+export default { getAll,creatRecord,deleteRecord,updateRecord }
