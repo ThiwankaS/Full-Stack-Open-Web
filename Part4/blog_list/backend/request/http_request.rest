@@ -39,3 +39,30 @@ Content-Type: application/json
     "name" : "Matti Luukkalainen",
     "password" : "salainen"
 }
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username" : "thiwankas",
+    "name" : "Thiwanka Somachandra",
+    "password" : "sa"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username" : "th",
+    "name" : "Thiwanka Somachandra",
+    "password" : "salainen"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username" : "",
+    "name" : "Thiwanka Somachandra",
+    "password" : ""
+}

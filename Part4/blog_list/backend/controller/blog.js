@@ -2,23 +2,23 @@ const blogRouter = require('express').Router()
 const Blog = require('../model/blog.js')
 
  
-blogRouter.get('/', async ( request,response,next ) => {
+blogRouter.get('/', async ( request,response) => {
     const blogs = await Blog.find({})
     response.json(blogs)
 })
   
-blogRouter.post('/', async ( request,response,next ) => {
+blogRouter.post('/', async ( request,response) => {
     const blog = new Blog(request.body)
     const result = await blog.save()
     response.status(201).json(result)
 })
 
-blogRouter.delete('/:id', async (request,response,next) => {
+blogRouter.delete('/:id', async (request,response) => {
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
 })
 
-blogRouter.put('/:id', async (request,response,next) => {
+blogRouter.put('/:id', async (request,response) => {
     const body = request.body
     const updatedRecord = {
         title   : body.title,
