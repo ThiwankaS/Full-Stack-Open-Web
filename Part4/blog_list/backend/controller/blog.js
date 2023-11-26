@@ -29,7 +29,15 @@ blogRouter.post('/', async ( request,response) => {
 })
 
 blogRouter.delete('/:id', async (request,response) => {
-    await Blog.findByIdAndDelete(request.params.id)
+    const decodedToken = jwt.verify(request.token,process.env.SECRET)
+    if(!decodedToken.id){
+        return response.status(406).json({ error : 'invalid token'})
+    }
+    const blog = await Blog.findById(request.params.id)
+    if(!(blog.user.toString() === decodedToken.id.toString())){
+        return response.status(403).json({ error : 'user doses not have access rights'})
+    }
+    await Blog.findOneAndDelete(blog)
     response.status(204).end()
 })
 

@@ -72,13 +72,13 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username" : "mluukkai",
+    "username" : "hellas",
     "password" : "salainen"
 }
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NTVmYTZmYTE3MjdiNTFiZjgyMGYwNWQiLCJpYXQiOjE3MDA5ODM5NTV9.uu6qTgB1NyRuOm2vmNVksaDYfo4odFL3kc8DOPc76R0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjU2MTY3NzIzNTQ0YTVjMTI5ZDc3NzgyIiwiaWF0IjoxNzAwOTk2NjExfQ.EMRpWVz0WwIPg-86Jhsmv1QhW9udJiZnzOOrL8zHc_o
 
 {
     "title": "The Agile Fluency Model",
@@ -86,3 +86,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sd
     "url": "https://martinfowler.com/articles/agileFluency.html",
     "likes": 5000
 }
+###
+DELETE http://localhost:3003/api/blogs/6563261f15937f25c22f7f4a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NTVmYTZmYTE3MjdiNTFiZjgyMGYwNWQiLCJpYXQiOjE3MDA5ODM5NTV9.uu6qTgB1NyRuOm2vmNVksaDYfo4odFL3kc8DOPc76R0
