@@ -9,6 +9,7 @@ const loginRouter = require('./controller/login')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const ErrorHandler = require('./middleware/errorHandeler')
+const tokenExtractor = require('./middleware/tokenExtractor')
 
 
 mongoose.set('strictQuery',false)
@@ -22,6 +23,7 @@ mongoose.connect(mongoUrl).then((result)=>{
 app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
+app.use(tokenExtractor)
 app.use('/api/users',userRouter)
 app.use('/api/blogs',blogRouter)
 app.use('/api/login',loginRouter)
