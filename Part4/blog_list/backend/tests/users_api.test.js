@@ -47,7 +47,7 @@ describe('testing user api',() => {
                             .post('/api/users')
                             .send(newUser)
                             .expect(406)
-        expect(result.body.error).toContain('username and password must contains al least 3 characters')
+        expect(result.body.error).toContain('username and password must contains at least 3 characters')
     })
 
     test('creation fails with proper status-code and message if username already taken', async () => {

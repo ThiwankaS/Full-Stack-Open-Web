@@ -1,4 +1,5 @@
 const config = require('./utils/config')
+const middleware = require('./utils/middleware')
 const express = require('express')
 const app = express()
 require('express-async-errors')
@@ -8,8 +9,8 @@ const userRouter = require('./controller/users')
 const loginRouter = require('./controller/login')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-const ErrorHandler = require('./middleware/errorHandeler')
-const tokenExtractor = require('./middleware/tokenExtractor')
+//const ErrorHandler = require('./middleware/errorHandeler')
+//const tokenExtractor = require('./middleware/tokenExtractor')
 
 
 mongoose.set('strictQuery',false)
@@ -23,10 +24,10 @@ mongoose.connect(mongoUrl).then((result)=>{
 app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
-app.use(tokenExtractor)
+app.use(middleware.tokenExtractor)
 app.use('/api/users',userRouter)
-app.use('/api/blogs',blogRouter)
+app.use('/api/blogs',blogRouter,middleware.userExtractor)
 app.use('/api/login',loginRouter)
-app.use(ErrorHandler)
+app.use(middleware.errorHandler)
 
 module.exports = app
