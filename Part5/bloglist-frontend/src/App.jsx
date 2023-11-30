@@ -1,9 +1,21 @@
 import { useState,useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blog'
 import loginService from './services/login'
 
 const App = () => {
+
+  const defaultMessage = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderColor: 'green',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
 
   const [ blogs,setBlogs] = useState([])
   const [ user,setUser]   = useState(null)
@@ -13,7 +25,10 @@ const App = () => {
   const [ title,setTitle ] = useState('')
   const [ author,setAuthor ] = useState('')
   const [url,setUrl ] = useState('')
+  const [ message,setMessage ] = useState(null)
+  const [ messageStyle,setMessageStyle ] = useState(defaultMessage)
 
+  //Download all the availabale records during the initial render
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   },[])
@@ -29,6 +44,15 @@ const App = () => {
     }
   },[blogs])
 
+  const displayNotification = (color,message) => {
+    const updatedStyle = {...messageStyle,color: color ,borderColor: color} 
+      setMessageStyle(updatedStyle); 
+      setMessage(message)
+      setTimeout(()=> {
+            setMessage(null)
+      },5000)
+  }
+
   const handelLogin = async (event) => {
     event.preventDefault()
     try {
@@ -41,7 +65,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('wrong credentials')
+      const color = 'red'
+      const message = 'wrong username or passwrod'
+      displayNotification(color,message)
     }
   }
 
@@ -54,22 +80,34 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('Oops! something went wrong')
+      const color = 'red'
+      const message = 'Oops! something went wrong'
+      displayNotification(color,message)
     }
   }
 
   const handelCreateNew = async (event) => {
     event.preventDefault()
-    const newObject = {
-      title : title,
-      author : author,
-      url : url
+    
+    try{
+      const newObject = {
+        title : title,
+        author : author,
+        url : url
+      }
+      blogService.createRecord(newObject)
+      setListToShow(listToShow.concat(newObject))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      const color = 'green'
+      const message = `a new blog \' ${ newObject.title } \' added by ${ user.name }`
+      displayNotification(color,message)
+    } catch(exception){
+      const color = 'red'
+      const message = 'Could not creat the record'
+      displayNotification(color,message)
     }
-    blogService.createRecord(newObject)
-    setListToShow(listToShow.concat(newObject))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
   }
 
   const loginForm = () => (
@@ -120,6 +158,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} messageStyle={messageStyle} />
       <div>
       {user === null && loginForm()}
       {user !== null && newBlogForm()}
