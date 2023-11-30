@@ -15,6 +15,16 @@ const App = () => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   },[])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedInUser')
+    if(loggedUserJSON){
+      const loggedInUser = JSON.parse(loggedUserJSON)
+      setUser(loggedInUser)
+      const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
+      setListToShow(blogList)
+    }
+  },[blogs])
+
   const handelLogin = async (event) => {
     event.preventDefault()
     try {
@@ -22,6 +32,7 @@ const App = () => {
       setUser(loggedInUser)
       const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
       setListToShow(blogList)
+      window.localStorage.setItem('loggedInUser',JSON.stringify(loggedInUser))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -29,8 +40,19 @@ const App = () => {
     }
   }
 
-  if(user === null){
-    return(
+  const handelLogout = async (event) => {
+    event.preventDefault()
+    try{
+      setUser(null)
+      window.localStorage.removeItem('loggedInUser')
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      console.log('Oops! something went wrong')
+    }
+  }
+
+  const loginForm = () => (
       <div>
         <form onSubmit={handelLogin}>
           <div>
@@ -45,12 +67,21 @@ const App = () => {
         </form>
       </div>
     )
-  }
+
+  const display = () => (
+    <div>
+      <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
+      {listToShow.map(blog => <Blog key={blog.id} blog={blog}/>)}
+    </div>
+  )
 
   return (
     <div>
       <h2>blogs</h2>
-      {listToShow.map(blog => <Blog key={blog.id} blog={blog}/>)}
+      <div>
+      {user === null && loginForm()}
+      {user !== null && display()}
+      </div>
     </div>
   )
 }
