@@ -10,6 +10,9 @@ const App = () => {
   const [ username,setUsername ] = useState('')
   const [ password,setPassword ] = useState('')
   const [ listToShow,setListToShow ] = useState([])
+  const [ title,setTitle ] = useState('')
+  const [ author,setAuthor ] = useState('')
+  const [url,setUrl ] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -20,6 +23,7 @@ const App = () => {
     if(loggedUserJSON){
       const loggedInUser = JSON.parse(loggedUserJSON)
       setUser(loggedInUser)
+      blogService.setToken(loggedInUser.token)
       const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
       setListToShow(blogList)
     }
@@ -30,6 +34,7 @@ const App = () => {
     try {
       const loggedInUser = await loginService.login({ username,password })
       setUser(loggedInUser)
+      blogService.setToken(loggedInUser.token)
       const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
       setListToShow(blogList)
       window.localStorage.setItem('loggedInUser',JSON.stringify(loggedInUser))
@@ -44,12 +49,27 @@ const App = () => {
     event.preventDefault()
     try{
       setUser(null)
+      blogService.setToken(null)
       window.localStorage.removeItem('loggedInUser')
       setUsername('')
       setPassword('')
     } catch (exception) {
       console.log('Oops! something went wrong')
     }
+  }
+
+  const handelCreateNew = async (event) => {
+    event.preventDefault()
+    const newObject = {
+      title : title,
+      author : author,
+      url : url
+    }
+    blogService.createRecord(newObject)
+    setListToShow(listToShow.concat(newObject))
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   const loginForm = () => (
@@ -70,8 +90,30 @@ const App = () => {
 
   const display = () => (
     <div>
-      <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
+      <h4>previous list</h4>
       {listToShow.map(blog => <Blog key={blog.id} blog={blog}/>)}
+    </div>
+  )
+
+  const newBlogForm = () => (
+    <div>
+      <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
+      <h4>create new</h4>
+      <form onSubmit={handelCreateNew}>
+        <div>
+              title : 
+              <input type='text' value={title} name='Title' onChange={({target}) => setTitle(target.value)}/>
+        </div>
+        <div>
+              author : 
+              <input type='text' value={author} name='Author' onChange={({target}) => setAuthor(target.value)}/>
+        </div>
+        <div>
+              url : 
+              <input type='text' value={url} name='Url' onChange={({target}) => setUrl(target.value)}/>
+        </div>
+        <button type='submit'>Create</button>
+      </form>
     </div>
   )
 
@@ -80,6 +122,7 @@ const App = () => {
       <h2>blogs</h2>
       <div>
       {user === null && loginForm()}
+      {user !== null && newBlogForm()}
       {user !== null && display()}
       </div>
     </div>
