@@ -1,8 +1,12 @@
 import { useState,useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blog'
 import loginService from './services/login'
+
 
 const App = () => {
 
@@ -111,20 +115,16 @@ const App = () => {
   }
 
   const loginForm = () => (
-      <div>
-        <form onSubmit={handelLogin}>
-          <div>
-            username : 
-            <input type='text' value={username} name='Username' onChange={({target}) => setUsername(target.value)}/>
-          </div>
-          <div>
-            password : 
-            <input type='password' value={password} name='Password' onChange={({target}) => setPassword(target.value)}/>
-          </div>
-          <button type='submit'>Login</button>
-        </form>
-      </div>
-    )
+    <div>
+      <LoginForm 
+        handelLogin={handelLogin}
+        username={username}
+        password={password}
+        handleUsernameChange={({target}) => setUsername(target.value)}
+        handlePasswordChange={({target}) => setPassword(target.value)}
+      />
+    </div>
+  )
 
   const display = () => (
     <div>
@@ -137,21 +137,17 @@ const App = () => {
     <div>
       <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
       <h4>create new</h4>
-      <form onSubmit={handelCreateNew}>
-        <div>
-              title : 
-              <input type='text' value={title} name='Title' onChange={({target}) => setTitle(target.value)}/>
-        </div>
-        <div>
-              author : 
-              <input type='text' value={author} name='Author' onChange={({target}) => setAuthor(target.value)}/>
-        </div>
-        <div>
-              url : 
-              <input type='text' value={url} name='Url' onChange={({target}) => setUrl(target.value)}/>
-        </div>
-        <button type='submit'>Create</button>
-      </form>
+      <Togglable buttonLable='Create New'>
+          <BlogForm 
+            handleCreateNew={handelCreateNew}
+            title={title}
+            author={author}
+            url={url}
+            handleTitleChange={({target}) => setTitle(target.value)}
+            handleAuthorChange={({target}) => setAuthor(target.value)}
+            handleUrlChange={({target}) => setUrl(target.value)}
+          />
+      </Togglable>
     </div>
   )
 
