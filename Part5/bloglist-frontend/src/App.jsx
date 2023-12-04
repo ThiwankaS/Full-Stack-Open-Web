@@ -26,9 +26,6 @@ const App = () => {
   const [ username,setUsername ] = useState('')
   const [ password,setPassword ] = useState('')
   const [ listToShow,setListToShow ] = useState([])
-  const [ title,setTitle ] = useState('')
-  const [ author,setAuthor ] = useState('')
-  const [url,setUrl ] = useState('')
   const [ message,setMessage ] = useState(null)
   const [ messageStyle,setMessageStyle ] = useState(defaultMessage)
 
@@ -90,27 +87,17 @@ const App = () => {
     }
   }
 
-  const handelCreateNew = async (event) => {
-    event.preventDefault()
-    
+  const createBlogList = async (newObject) => {   
     try{
-      const newObject = {
-        title : title,
-        author : author,
-        url : url
-      }
-      blogService.createRecord(newObject)
-      setListToShow(listToShow.concat(newObject))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      const color = 'green'
-      const message = `a new blog \' ${ newObject.title } \' added by ${ user.name }`
-      displayNotification(color,message)
+        await blogService.createRecord(newObject)
+        setListToShow(listToShow.concat(newObject))
+        const color = 'green'
+        const message = `a new blog \' ${ newObject.title } \' added by ${ user.name }`
+        displayNotification(color,message)
     } catch(exception){
-      const color = 'red'
-      const message = 'Could not creat the record'
-      displayNotification(color,message)
+        const color = 'red'
+        const message = 'Could not creat the record'
+        displayNotification(color,message)
     }
   }
 
@@ -136,16 +123,10 @@ const App = () => {
   const newBlogForm = () => (
     <div>
       <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
-      <h4>create new</h4>
+      <h4>Create new blog list</h4>
       <Togglable buttonLable='Create New'>
           <BlogForm 
-            handleCreateNew={handelCreateNew}
-            title={title}
-            author={author}
-            url={url}
-            handleTitleChange={({target}) => setTitle(target.value)}
-            handleAuthorChange={({target}) => setAuthor(target.value)}
-            handleUrlChange={({target}) => setUrl(target.value)}
+            createNew={createBlogList}
           />
       </Togglable>
     </div>
