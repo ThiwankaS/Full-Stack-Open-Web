@@ -18,7 +18,6 @@ const Blog = ({ blog }) => {
         setVisibility(!visibility)
         setButtonLable(visibility ? 'Show' : 'Hide')
       }
-
       return (
         <div style={blogStyle}>
             <div>Titile : {blog.title} <button onClick={toggaleVisibility}>{buttonLable}</button></div>
