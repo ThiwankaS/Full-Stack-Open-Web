@@ -138,12 +138,15 @@ const App = () => {
     </div>
   )
 
-  const display = () => (
-    <div>
-      <h4>previous list</h4>
-      {listToShow.map(blog => <Blog key={blog.id} blog={blog} handleClickLikeButton={handleLike}/>)}
-    </div>
-  )
+  const display = () => {
+    const sortByLikes = (a,b) => b.likes - a.likes
+    return(
+        <div>
+          <h4>previous list</h4>
+            {listToShow.sort(sortByLikes).map(blog => <Blog key={blog.id} blog={blog} handleClickLikeButton={handleLike} user={user}/>)}
+        </div>
+    )
+  }
 
   const newBlogForm = () => (
     <div>
