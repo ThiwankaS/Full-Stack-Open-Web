@@ -44,9 +44,11 @@ blogRouter.delete('/:id', async (request,response) => {
 blogRouter.put('/:id', async (request,response) => {
     const body = request.body
     const updatedRecord = {
+        id      : body.id,
         url     : body.url,
         title   : body.title,
         author  : body.author,
+        user    : body.user,
         likes   : body.likes
     }
     const decodedToken = jwt.verify(request.token,process.env.SECRET)

@@ -87,10 +87,26 @@ const App = () => {
     }
   }
 
+  const updateBlogList = async (newObject) => {
+    try{
+      const updatedRecord = await blogService.updateRecord(newObject)
+      const filteredList = listToShow.filter(record => record.id !== updatedRecord.id)
+      setListToShow(filteredList.concat(updatedRecord))
+    } catch (exception) {
+      const color = 'red'
+      const message = 'Could not update the record'
+      displayNotification(color,message)
+    }
+  }
+
+  const handleLike = (previousLitItem) => {
+    const updateListItem = {...previousLitItem, likes : previousLitItem.likes + 1}
+    updateBlogList(updateListItem)
+  }
+
   const createBlogList = async (newObject) => {   
     try{
         const newRecord = await blogService.createRecord(newObject)
-        console.log('new reord user', newRecord.user)
         const newListItem = {
           id      : newRecord.id,
           url     : newRecord.url,
@@ -125,7 +141,7 @@ const App = () => {
   const display = () => (
     <div>
       <h4>previous list</h4>
-      {listToShow.map(blog => <Blog key={blog.id} blog={blog}/>)}
+      {listToShow.map(blog => <Blog key={blog.id} blog={blog} handleClickLikeButton={handleLike}/>)}
     </div>
   )
 
