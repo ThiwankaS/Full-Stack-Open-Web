@@ -89,8 +89,8 @@ const App = () => {
 
   const createBlogList = async (newObject) => {   
     try{
-        await blogService.createRecord(newObject)
-        setListToShow(listToShow.concat(newObject))
+        const newRecord = await blogService.createRecord(newObject)
+        setListToShow(listToShow.concat(newRecord))
         const color = 'green'
         const message = `a new blog \' ${ newObject.title } \' added by ${ user.name }`
         displayNotification(color,message)
