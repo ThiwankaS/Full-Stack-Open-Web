@@ -46,12 +46,12 @@ const App = () => {
   },[blogs])
 
   const displayNotification = (color,message) => {
-    const updatedStyle = {...messageStyle,color: color ,borderColor: color} 
-      setMessageStyle(updatedStyle); 
-      setMessage(message)
-      setTimeout(()=> {
-            setMessage(null)
-      },5000)
+    const updatedStyle = { ...messageStyle,color: color ,borderColor: color }
+    setMessageStyle(updatedStyle)
+    setMessage(message)
+    setTimeout(()=> {
+      setMessage(null)
+    },5000)
   }
 
   const handelLogin = async (event) => {
@@ -90,15 +90,15 @@ const App = () => {
 
 
   const handleLike = (recordToUpdate) => {
-    const updatedRecord = {...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
+    const updatedRecord = { ...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
     updateBlogList(updatedRecord)
   }
 
   const updateBlogList = async (updatedRecord) => {
     try{
-        const updatedListItem = await blogService.updateRecord(updatedRecord)
-        const filteredList = listToShow.filter(record => record.id !== updatedListItem.id)
-        setListToShow(filteredList.concat(updatedListItem))
+      const updatedListItem = await blogService.updateRecord(updatedRecord)
+      const filteredList = listToShow.filter(record => record.id !== updatedListItem.id)
+      setListToShow(filteredList.concat(updatedListItem))
     } catch (exception) {
       const color = 'red'
       const message = 'Could not update the record'
@@ -106,25 +106,25 @@ const App = () => {
     }
   }
 
-  const createBlogList = async (newObject) => {   
+  const createBlogList = async (newObject) => {
     try{
-        const newRecord = await blogService.createRecord(newObject)
-        const newListItem = {
-          id      : newRecord.id,
-          url     : newRecord.url,
-          title   : newRecord.title,
-          author  : newRecord.author,
-          user    : [{'id' : user.id, 'name' : user.name, 'username' : user.username}],
-          likes   : newRecord.likes
-        }
-        setListToShow(listToShow.concat(newListItem))
-        const color = 'green'
-        const message = `a new blog \' ${ newObject.title } \' added by ${ user.name }`
-        displayNotification(color,message)
+      const newRecord = await blogService.createRecord(newObject)
+      const newListItem = {
+        id      : newRecord.id,
+        url     : newRecord.url,
+        title   : newRecord.title,
+        author  : newRecord.author,
+        user    : [{ 'id' : user.id, 'name' : user.name, 'username' : user.username }],
+        likes   : newRecord.likes
+      }
+      setListToShow(listToShow.concat(newListItem))
+      const color = 'green'
+      const message = `a new blog '${ newObject.title }' added by ${ user.name }`
+      displayNotification(color,message)
     } catch(exception){
-        const color = 'red'
-        const message = 'Could not creat the record'
-        displayNotification(color,message)
+      const color = 'red'
+      const message = 'Could not creat the record'
+      displayNotification(color,message)
     }
   }
 
@@ -141,20 +141,20 @@ const App = () => {
       const filteredList = listToShow.filter(record => record.id !== recordToDelete.id)
       setListToShow(filteredList)
     } catch (exception) {
-        const color = 'red'
-        const message = 'Could not delete the record'
-        displayNotification(color,message)
+      const color = 'red'
+      const message = 'Could not delete the record'
+      displayNotification(color,message)
     }
   }
 
   const loginForm = () => (
     <div>
-      <LoginForm 
+      <LoginForm
         handelLogin={handelLogin}
         username={username}
         password={password}
-        handleUsernameChange={({target}) => setUsername(target.value)}
-        handlePasswordChange={({target}) => setPassword(target.value)}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
       />
     </div>
   )
@@ -162,16 +162,16 @@ const App = () => {
   const display = () => {
     const sortByLikes = (a,b) => b.likes - a.likes
     return(
-        <div>
-          <h4>previous list</h4>
-            {listToShow.sort(sortByLikes).map(blog => <Blog 
-                              key={blog.id}
-                              blog={blog}
-                              handleClickLikeButton={handleLike}
-                              handleClickRemoveButton={handleRemove}
-                              user={user}
-                              />)}
-        </div>
+      <div>
+        <h4>previous list</h4>
+        {listToShow.sort(sortByLikes).map(blog => <Blog
+          key={blog.id}
+          blog={blog}
+          handleClickLikeButton={handleLike}
+          handleClickRemoveButton={handleRemove}
+          user={user}
+        />)}
+      </div>
     )
   }
 
@@ -180,9 +180,9 @@ const App = () => {
       <p>{user.name} logged in <button onClick={handelLogout}>Logout</button></p>
       <h4>Create new blog list</h4>
       <Togglable buttonLable='Create New'>
-          <BlogForm 
-            createNew={createBlogList}
-          />
+        <BlogForm
+          createNew={createBlogList}
+        />
       </Togglable>
     </div>
   )
@@ -192,9 +192,9 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={message} messageStyle={messageStyle} />
       <div>
-      {user === null && loginForm()}
-      {user !== null && newBlogForm()}
-      {user !== null && display()}
+        {user === null && loginForm()}
+        {user !== null && newBlogForm()}
+        {user !== null && display()}
       </div>
     </div>
   )
