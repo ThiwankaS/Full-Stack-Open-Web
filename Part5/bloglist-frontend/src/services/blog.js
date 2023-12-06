@@ -20,7 +20,7 @@ const createRecord = async newObject => {
     return response.data
 }
 
-const updateRecord = async updateObject => {
+const updateRecord = async updateObject => { 
     const config = {
         headers : { Authorization : token }
     }
