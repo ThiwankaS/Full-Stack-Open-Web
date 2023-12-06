@@ -28,4 +28,12 @@ const updateRecord = async updateObject => {
     return response.data
 }
 
-export default { getAll,createRecord,setToken,updateRecord }
+const deleteRecord = async (recordToDelete) => {
+    const config = {
+        headers : { Authorization : token }
+    }
+    const response = await axios.delete(`${baseUrl}/${recordToDelete.id}`,config)
+    return response.data
+}   
+
+export default { getAll,createRecord,setToken,updateRecord,deleteRecord }

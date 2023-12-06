@@ -87,9 +87,16 @@ const App = () => {
     }
   }
 
-  const updateBlogList = async (newObject) => {
+
+
+  const handleLike = (recordToUpdate) => {
+    const updatedRecord = {...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
+    updateBlogList(updatedRecord)
+  }
+
+  const updateBlogList = async (updatedRecord) => {
     try{
-        const updatedListItem = await blogService.updateRecord(newObject)
+        const updatedListItem = await blogService.updateRecord(updatedRecord)
         const filteredList = listToShow.filter(record => record.id !== updatedListItem.id)
         setListToShow(filteredList.concat(updatedListItem))
     } catch (exception) {
@@ -97,11 +104,6 @@ const App = () => {
       const message = 'Could not update the record'
       displayNotification(color,message)
     }
-  }
-
-  const handleLike = (previousLitItem) => {
-    const updatedItem = {...previousLitItem, user : previousLitItem.user[0].id,likes : previousLitItem.likes + 1 }
-    updateBlogList(updatedItem)
   }
 
   const createBlogList = async (newObject) => {   
@@ -126,6 +128,25 @@ const App = () => {
     }
   }
 
+  const handleRemove = (recordToDelete) => {
+    const confirmation = window.confirm(`Remove blog ${recordToDelete.title} by ${recordToDelete.author}`)
+    if(confirmation){
+      deleteBlogList(recordToDelete)
+    }
+  }
+
+  const deleteBlogList = async (recordToDelete) => {
+    try {
+      await blogService.deleteRecord(recordToDelete)
+      const filteredList = listToShow.filter(record => record.id !== recordToDelete.id)
+      setListToShow(filteredList)
+    } catch (exception) {
+        const color = 'red'
+        const message = 'Could not delete the record'
+        displayNotification(color,message)
+    }
+  }
+
   const loginForm = () => (
     <div>
       <LoginForm 
@@ -143,7 +164,13 @@ const App = () => {
     return(
         <div>
           <h4>previous list</h4>
-            {listToShow.sort(sortByLikes).map(blog => <Blog key={blog.id} blog={blog} handleClickLikeButton={handleLike}/>)}
+            {listToShow.sort(sortByLikes).map(blog => <Blog 
+                              key={blog.id}
+                              blog={blog}
+                              handleClickLikeButton={handleLike}
+                              handleClickRemoveButton={handleRemove}
+                              user={user}
+                              />)}
         </div>
     )
   }
