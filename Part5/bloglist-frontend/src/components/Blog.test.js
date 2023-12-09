@@ -39,5 +39,12 @@ describe('<Bolg />', () => {
     const buttonDiv = container.querySelector('.buttonDiv')
     expect(buttonDiv).toHaveStyle('display : none')
   })
+  test('button controlling the shown details once clicked', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('Show')
+    await user.click(button)
+    const buttonDiv = container.querySelector('.buttonDiv')
+    expect(buttonDiv).not.toHaveStyle('display : none')
+  })
 })
 
