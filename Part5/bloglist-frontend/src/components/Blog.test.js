@@ -46,5 +46,12 @@ describe('<Bolg />', () => {
     const buttonDiv = container.querySelector('.buttonDiv')
     expect(buttonDiv).not.toHaveStyle('display : none')
   })
+  test('if the like button is clicked twice, the event handler called twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('like')
+    await user.click(button)
+    await user.click(button)
+    expect(handleClickLikeButton.mock.calls).toHaveLength(2)
+  })
 })
 
