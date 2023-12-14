@@ -53,12 +53,30 @@ describe('Blog app testing',() => {
           url : 'https://www.test.org/testing-with-cypress'
         })
       })
-      it('User can like a blog list', () => {
+      it('- user can like a blog list', () => {
         cy.contains('Testing like button with cypress')
         cy.get('#show-button').click()
         cy.get('#like-element').should('contain','0')
         cy.get('#like-button').click()
         cy.get('#like-element').should('contain','1')
+      })
+      it('- user can delete a blog list', () => {
+        cy.create({
+          title : 'Testing remove button with cypress',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress'
+        })
+        cy.create({
+          title : 'This will be romoved',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress'
+        })
+        cy.contains('Testing remove button with cypress')
+
+        cy.contains('This will be romoved').parent().find('#show-button').as('the-show-button')
+        cy.get('@the-show-button').click()
+        cy.contains('This will be romoved').parent().find('#delete-button').as('the-delete-button')
+        cy.get('@the-delete-button').click()
       })
     })
   })
