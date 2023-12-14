@@ -24,12 +24,12 @@ const Blog = ({ blog,handleClickLikeButton,handleClickRemoveButton,user }) => {
   }
   return (
     <div style={blogStyle}>
-      <div className='titleDiv'>Titile : {blog.title} <button onClick={toggaleVisibility}>{buttonLable}</button></div>
+      <div className='titleDiv'>Titile : {blog.title} <button id='show-button' onClick={toggaleVisibility}>{buttonLable}</button></div>
       <div className='buttonDiv' style={showDetails}>
         <div>url : {blog.url}</div>
-        <div>likes : {blog.likes} <button onClick={() => handleClickLikeButton(blog)}>like</button></div>
+        <div id='like-element' >likes : {blog.likes} <button id='like-button' onClick={() => handleClickLikeButton(blog)}>like</button></div>
         <div>Created by : {user.name} </div>
-        <div><button style={buttonStyle} onClick={() => handleClickRemoveButton(blog)}>Remove</button></div>
+        <div><button id='delete-button' style={buttonStyle} onClick={() => handleClickRemoveButton(blog)}>Remove</button></div>
       </div>
     </div>
   )

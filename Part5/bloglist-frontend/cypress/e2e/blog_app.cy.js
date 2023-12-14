@@ -45,5 +45,21 @@ describe('Blog app testing',() => {
       cy.contains('previous list')
       cy.contains('Testing a blog list create with cypress')
     })
+    describe('After create a blog list',() =>{
+      beforeEach(() => {
+        cy.create({
+          title : 'Testing like button with cypress',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress'
+        })
+      })
+      it('User can like a blog list', () => {
+        cy.contains('Testing like button with cypress')
+        cy.get('#show-button').click()
+        cy.get('#like-element').should('contain','0')
+        cy.get('#like-button').click()
+        cy.get('#like-element').should('contain','1')
+      })
+    })
   })
 })
