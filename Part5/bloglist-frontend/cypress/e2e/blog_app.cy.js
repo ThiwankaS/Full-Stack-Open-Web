@@ -77,6 +77,26 @@ describe('Blog app testing',() => {
         cy.get('@the-show-button').click()
         cy.contains('This will be romoved').parent().find('#delete-button').as('the-delete-button')
         cy.get('@the-delete-button').click()
+        cy.contains('This will be romoved').should('not.exist')
+      })
+      it('- other user can not read/edit or delete that are created by another user', () => {
+        cy.create({
+          title : 'Testing user acess with cypress',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress'
+        })
+        cy.contains('Logout').click()
+        cy.request('POST','http://localhost:3003/api/testing/reset')
+        const user = {
+          username : 'thiwankas',
+          name     : 'Thiwanka Somachandra',
+          password : 'salainen'
+        }
+        cy.request('POST','http://localhost:3003/api/users',user)
+        cy.visit('http://localhost:5173/')
+        cy.login({ username : 'thiwankas', password : 'salainen' })
+        cy.contains('previous list')
+        cy.contains('Testing user acess with cypress').should('not.exist')
       })
     })
   })
