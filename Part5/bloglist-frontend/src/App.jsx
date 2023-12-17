@@ -164,13 +164,15 @@ const App = () => {
     return(
       <div>
         <h4>previous list</h4>
-        {listToShow.sort(sortByLikes).map(blog => <Blog
-          key={blog.id}
-          blog={blog}
-          handleClickLikeButton={handleLike}
-          handleClickRemoveButton={handleRemove}
-          user={user}
-        />)}
+        <div>
+          {listToShow.sort(sortByLikes).map(blog => <Blog
+            key={blog.id}
+            blog={blog}
+            handleClickLikeButton={handleLike}
+            handleClickRemoveButton={handleRemove}
+            user={user}
+          />)}
+        </div>
       </div>
     )
   }

@@ -44,3 +44,18 @@ Cypress.Commands.add('create',({ title,author,url }) => {
   )
   cy.visit('http://localhost:5173/')
 })
+
+Cypress.Commands.add('addingLikes',({ title,author,url,likes }) => {
+  const user = JSON.parse(localStorage.getItem('loggedInUser'))
+  cy.request(
+    {
+      url     : 'http://localhost:3003/api/blogs',
+      method  : 'POST',
+      body    : { title : title, author : author, url : url , likes : likes },
+      headers  : {
+        'Authorization' : `Bearer ${user.token}`
+      }
+    }
+  )
+  cy.visit('http://localhost:5173/')
+})

@@ -98,6 +98,36 @@ describe('Blog app testing',() => {
         cy.contains('previous list')
         cy.contains('Testing user acess with cypress').should('not.exist')
       })
+      it('- blogs are ordered according to likes', () => {
+        cy.addingLikes({
+          title : 'The title with the most likes',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress',
+          likes : 4
+        })
+        cy.addingLikes({
+          title : 'The title with the third most likes',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress',
+          likes : 2
+        })
+        cy.addingLikes({
+          title : 'The title with the second most likes',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress',
+          likes : 3
+        })
+        cy.addingLikes({
+          title : 'The title with the least likes',
+          author : 'Thiwanka Somachandra',
+          url : 'https://www.test.org/testing-with-cypress',
+          likes : 1
+        })
+        cy.get('.blogList').eq(0).should('contain','The title with the most likes')
+        cy.get('.blogList').eq(1).should('contain','The title with the second most likes')
+        cy.get('.blogList').eq(2).should('contain','The title with the third most likes')
+        cy.get('.blogList').eq(3).should('contain','The title with the least likes')
+      })
     })
   })
 })

@@ -23,7 +23,7 @@ const Blog = ({ blog,handleClickLikeButton,handleClickRemoveButton,user }) => {
     setButtonLable(visibility ? 'Show' : 'Hide')
   }
   return (
-    <div style={blogStyle}>
+    <div className='blogList' style={blogStyle}>
       <div className='titleDiv'>Titile : {blog.title} <button id='show-button' onClick={toggaleVisibility}>{buttonLable}</button></div>
       <div className='buttonDiv' style={showDetails}>
         <div>url : {blog.url}</div>
