@@ -11,6 +11,7 @@ const Filter = () => {
     }
 
     const style = {
+        marginTop : 10,
         marginBottom : 10
     }
 
