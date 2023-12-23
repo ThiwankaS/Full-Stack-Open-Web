@@ -25,7 +25,7 @@ const AnecdoteList = () => {
 
     return(
         <div>
-            {anecdotes.sort(sortByVotes).map(anecdote =>
+            {anecdotes.slice().sort(sortByVotes).map(anecdote =>
                 <div key={anecdote.id} style={style}>
                     <div>
                         {anecdote.content}

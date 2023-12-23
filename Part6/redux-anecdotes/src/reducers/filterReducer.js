@@ -16,7 +16,7 @@ export const { filterChange } = filterSlice.actions
 export default filterSlice.reducer
 
 /*
-with out using reduxjs/toolkit 
+with out using @reduxjs/toolkit 
 ------------------------------->
 const filterReducer = (state ='ALL', action) => {
     switch(action.type){
