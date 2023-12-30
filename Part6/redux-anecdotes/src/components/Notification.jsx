@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 
 const Notification = () => {
 
-  
   const notification = useSelector(({notification}) => notification)
   const [ visibility,setVisibility ] = useState(true)
   const [ message,setMessage ] = useState(null)
@@ -33,4 +32,3 @@ const Notification = () => {
 }
 
 export default Notification
-
