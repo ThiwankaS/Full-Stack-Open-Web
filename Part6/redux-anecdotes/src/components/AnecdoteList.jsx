@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { castVote } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = () => {
@@ -14,14 +13,8 @@ const AnecdoteList = () => {
 
     const dispatch = useDispatch()
   
-    const vote = ({id,content}) => {
-      dispatch(castVote(id))
-      const eventDetails = {
-        type : ' voted ',
-        content : content,
-        visibility : true
-      }
-      dispatch(setNotification(eventDetails))
+    const vote = (anecdote) => {
+      dispatch(castVote(anecdote))
     }
 
     const style = {

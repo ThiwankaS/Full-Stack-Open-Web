@@ -6,11 +6,8 @@ const anecdoteSlice = createSlice({
   name : 'anecdote',
   initialState : [],
   reducers : {
-    castVote (state,action ){
-      const id = action.payload
-      const selectedAnecdote = state.find(anecdote => anecdote.id === id)
-      const updateAnecdote = {...selectedAnecdote, votes : selectedAnecdote.votes + 1}
-      return state.map(anecdote => anecdote.id !== id ? anecdote : updateAnecdote )
+    updateAnecdote (state,action ) {
+      return state.map(anecdote => anecdote.id !== action.payload.id ? anecdote : action.payload )
     },
     setAnecdote (state,action) {
       return action.payload
@@ -21,7 +18,7 @@ const anecdoteSlice = createSlice({
   }
 })
 
-export const { castVote,setAnecdote,appendAnecdote } = anecdoteSlice.actions
+export const { updateAnecdote,setAnecdote,appendAnecdote } = anecdoteSlice.actions
 
 export const initializeAnecdote = () => {
   return async dispatch => {
@@ -47,5 +44,21 @@ export const createAnecdote = (content) => {
     dispatch(setNotification(eventDetails))
   }
 }
+
+export const castVote = (anecdote) => {
+  return async dispatch => {
+    const id = anecdote.id
+    const content = anecdote.content
+    const updatedObj = { ...anecdote, votes : anecdote.votes + 1 }
+    const newAnecdote = await anecdoteService.updateRecord(id,updatedObj)
+    dispatch(updateAnecdote(newAnecdote))
+    const eventDetails = {
+      type : ' voted ',
+      content : content,
+      visibility : true
+    }
+    dispatch(setNotification(eventDetails))
+  }
+} 
 
 export default anecdoteSlice.reducer
