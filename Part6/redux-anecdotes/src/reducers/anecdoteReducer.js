@@ -29,35 +29,23 @@ export const initializeAnecdote = () => {
 
 export const createAnecdote = (content) => {
   return async dispatch => {
-    const newAnecdote = await anecdoteService.createNew(content)
+    const anecdote = await anecdoteService.createNew(content)
     const anecdoteToUpdate = {
-        content: newAnecdote.content,
-        id: newAnecdote.id,
-        votes: newAnecdote.votes
+        content: anecdote.content,
+        id: anecdote.id,
+        votes: anecdote.votes
     }
     dispatch(appendAnecdote(anecdoteToUpdate))
-    const eventDetails = {
-      type : ' created ',
-      content : content,
-      visibility : true
-    }
-    dispatch(setNotification(eventDetails))
+    dispatch(setNotification(`you created ${anecdote.content}`,10))
   }
 }
 
 export const castVote = (anecdote) => {
   return async dispatch => {
-    const id = anecdote.id
-    const content = anecdote.content
     const updatedObj = { ...anecdote, votes : anecdote.votes + 1 }
-    const newAnecdote = await anecdoteService.updateRecord(id,updatedObj)
+    const newAnecdote = await anecdoteService.updateRecord(anecdote.id,updatedObj)
     dispatch(updateAnecdote(newAnecdote))
-    const eventDetails = {
-      type : ' voted ',
-      content : content,
-      visibility : true
-    }
-    dispatch(setNotification(eventDetails))
+    dispatch(setNotification(`you voted ${anecdote.content}`,10))
   }
 } 
 
