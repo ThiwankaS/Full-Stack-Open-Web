@@ -14,6 +14,10 @@ const AnecdoteForm = () => {
     mutationFn : createAnecdotes,
     onSuccess : () => {
       queryClient.invalidateQueries({queryKey: ['anecdote']})
+    },
+    onError : (error) => {
+      messageDispatch({payload : error.response.data.error})
+      visibilityDispatch({payload : true})
     }
   })
 
@@ -21,9 +25,14 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({content,votes : 0})
-    messageDispatch({payload : `anecdote '${content}' created`})
-    visibilityDispatch({payload : true})
+    try{
+      newAnecdoteMutation.mutate({content,votes : 0})
+      messageDispatch({payload : `anecdote '${content}' created`})
+      visibilityDispatch({payload : true})
+    } catch (error){
+      console.log({error})
+    }
+
 }
 
   return (
