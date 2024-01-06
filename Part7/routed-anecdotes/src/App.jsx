@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
 import {
-  Routes,Route,Link,useMatch
+  Routes,Route,Link,useMatch,Navigate
 } from 'react-router-dom'
 
 
@@ -109,10 +109,13 @@ const App = () => {
   }
 
   const [notification, setNotification] = useState('')
+  const [visibility,setVisibility] = useState(false)
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(anecdote.content)
+    setVisibility(true)
   }
 
   const anecdoteById = (id) =>
@@ -129,10 +132,18 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const Notification = () => (
+    <div>a new anecdote '{notification}' created ! </div>
+  )
+
   const match = useMatch('/anecdotes/:id')
   const anecdote = match 
-                    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id)) 
+                    ? anecdoteById(Number(match.params.id))
                     : null
+
+  setTimeout(()=>{
+    setVisibility(false)
+  },5000)
 
   return (
     <div>
@@ -142,9 +153,10 @@ const App = () => {
         <Link style={padding} to='/create'>create new</Link>
         <Link style={padding} to='/about'>about</Link>
       </div>
+      <div>{visibility && Notification()} </div>
       <Routes>
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path='/create' element={<CreateNew addNew={addNew} />} />
+        <Route path='/create' element={visibility ? <Navigate replace to='/'/> :<CreateNew addNew={addNew} />} />
         <Route path='/about' element={<About />} />
         <Route path='/anecdotes' element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
