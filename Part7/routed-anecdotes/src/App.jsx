@@ -1,9 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import {
-  Routes,Route,Link,useMatch,Navigate
-} from 'react-router-dom'
+import { Routes,Route,Link,useMatch,Navigate } from 'react-router-dom'
+import { useFeild } from './hooks'
 
 
 const AnecdoteList = ({ anecdotes }) => (
@@ -48,18 +47,18 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useFeild('text')
+  const author = useFeild('text')
+  const info = useFeild('text')
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
+      content : content.value,
+      author : author.value,
+      info : info.value,
+      votes : 0
     })
   }
 
@@ -69,15 +68,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info}/>
         </div>
         <button>create</button>
       </form>
