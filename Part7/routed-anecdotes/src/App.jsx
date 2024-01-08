@@ -47,10 +47,9 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const content = useFeild('text')
-  const author = useFeild('text')
-  const info = useFeild('text')
-
+  const { reset : contentReset, ...content} = useFeild('text')
+  const { reset : authorReset, ...author} = useFeild('text')
+  const { reset : infoReset, ...info} = useFeild('text')
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -63,9 +62,9 @@ const CreateNew = (props) => {
   }
 
   const handleReset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   return (
@@ -85,7 +84,7 @@ const CreateNew = (props) => {
           <input {...info}/>
         </div>
         <button type='submit'>create</button>
-        <button type='reset' onClick={handleReset}>reset</button>
+        <button type='button' onClick={handleReset}>reset</button>
       </form>
         
     </div>
