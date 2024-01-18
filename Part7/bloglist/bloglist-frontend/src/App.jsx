@@ -6,28 +6,19 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blog'
 import loginService from './services/login'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 
 const App = () => {
 
-  const defaultMessage = {
-    color: 'green',
-    background: 'lightgrey',
-    fontSize: 20,
-    borderStyle: 'solid',
-    borderColor: 'green',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10
-  }
+  const dispatch = useDispatch()
 
   const [ blogs,setBlogs] = useState([])
   const [ user,setUser]   = useState(null)
   const [ username,setUsername ] = useState('')
   const [ password,setPassword ] = useState('')
   const [ listToShow,setListToShow ] = useState([])
-  const [ message,setMessage ] = useState(null)
-  const [ messageStyle,setMessageStyle ] = useState(defaultMessage)
 
   //Download all the availabale records during the initial render
   useEffect(() => {
@@ -45,15 +36,6 @@ const App = () => {
     }
   },[blogs])
 
-  const displayNotification = (color,message) => {
-    const updatedStyle = { ...messageStyle,color: color ,borderColor: color }
-    setMessageStyle(updatedStyle)
-    setMessage(message)
-    setTimeout(()=> {
-      setMessage(null)
-    },5000)
-  }
-
   const handelLogin = async (event) => {
     event.preventDefault()
     try {
@@ -66,9 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      const color = 'red'
-      const message = 'wrong username or passwrod'
-      displayNotification(color,message)
+      dispatch(setNotification('wrong username or passwrod','red'))
     }
   }
 
@@ -81,9 +61,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      const color = 'red'
-      const message = 'Oops! something went wrong'
-      displayNotification(color,message)
+      dispatch(setNotification('Oops! something went wrong','red'))
     }
   }
 
@@ -100,9 +78,7 @@ const App = () => {
       const filteredList = listToShow.filter(record => record.id !== updatedListItem.id)
       setListToShow(filteredList.concat(updatedListItem))
     } catch (exception) {
-      const color = 'red'
-      const message = 'Could not update the record'
-      displayNotification(color,message)
+      dispatch(setNotification('Could not update the record','red'))
     }
   }
 
@@ -118,13 +94,9 @@ const App = () => {
         likes   : newRecord.likes
       }
       setListToShow(listToShow.concat(newListItem))
-      const color = 'green'
-      const message = `a new blog '${ newObject.title }' added by ${ user.name }`
-      displayNotification(color,message)
+      dispatch(setNotification(`a new blog '${ newObject.title }' added by ${ user.name }`,'green'))
     } catch(exception){
-      const color = 'red'
-      const message = 'Could not creat the record'
-      displayNotification(color,message)
+      dispatch(setNotification('Could not creat the record','red'))
     }
   }
 
@@ -141,9 +113,7 @@ const App = () => {
       const filteredList = listToShow.filter(record => record.id !== recordToDelete.id)
       setListToShow(filteredList)
     } catch (exception) {
-      const color = 'red'
-      const message = 'Could not delete the record'
-      displayNotification(color,message)
+      dispatch(setNotification('Could not delete the record','red'))
     }
   }
 
@@ -192,7 +162,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} messageStyle={messageStyle} />
+      <Notification />
       <div>
         {user === null && loginForm()}
         {user !== null && newBlogForm()}
