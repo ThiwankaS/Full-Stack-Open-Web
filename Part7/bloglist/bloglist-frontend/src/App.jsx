@@ -8,7 +8,7 @@ import blogService from './services/blog'
 import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogList,createBlogList } from './reducers/bloglistReducer'
+import { initializeBlogList,createBlogList,deleteBlogList,updateBlogList } from './reducers/bloglistReducer'
 
 
 const App = () => {
@@ -69,14 +69,8 @@ const App = () => {
   //Need to refactor below function
   const handleLike = (recordToUpdate) => {
     const updatedRecord = { ...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
-    updateBlogList(updatedRecord)
-  }
-  //Need to refactor below function
-  const updateBlogList = async (updatedRecord) => {
     try{
-      const updatedListItem = await blogService.updateRecord(updatedRecord)
-      const filteredList = listToShow.filter(record => record.id !== updatedListItem.id)
-      setListToShow(filteredList.concat(updatedListItem))
+      dispatch(updateBlogList(updatedRecord))
     } catch (exception) {
       dispatch(setNotification('Could not update the record','red'))
     }
@@ -95,17 +89,12 @@ const App = () => {
   const handleRemove = (recordToDelete) => {
     const confirmation = window.confirm(`Remove blog ${recordToDelete.title} by ${recordToDelete.author}`)
     if(confirmation){
-      deleteBlogList(recordToDelete)
-    }
-  }
-  //Need to refactor below function
-  const deleteBlogList = async (recordToDelete) => {
-    try {
-      await blogService.deleteRecord(recordToDelete)
-      const filteredList = listToShow.filter(record => record.id !== recordToDelete.id)
-      setListToShow(filteredList)
-    } catch (exception) {
-      dispatch(setNotification('Could not delete the record','red'))
+      try {
+        dispatch(deleteBlogList(recordToDelete))
+        dispatch(setNotification(`' ${recordToDelete.title}' sucessfully removed`,'green'))
+      } catch (exception) {
+        dispatch(setNotification('Could not delete the record','red'))
+      }
     }
   }
 
