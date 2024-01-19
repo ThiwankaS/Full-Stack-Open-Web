@@ -6,24 +6,26 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blog'
 import loginService from './services/login'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogList,createBlogList } from './reducers/bloglistReducer'
 
 
 const App = () => {
 
   const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
 
-  const [ blogs,setBlogs] = useState([])
+  const [ listToShow,setListToShow ] = useState([])
+
   const [ user,setUser]   = useState(null)
   const [ username,setUsername ] = useState('')
   const [ password,setPassword ] = useState('')
-  const [ listToShow,setListToShow ] = useState([])
 
   //Download all the availabale records during the initial render
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs))
-  },[])
+    dispatch(initializeBlogList())
+  },[dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -51,7 +53,7 @@ const App = () => {
       dispatch(setNotification('wrong username or passwrod','red'))
     }
   }
-
+  //Need to refactor below function
   const handelLogout = async (event) => {
     event.preventDefault()
     try{
@@ -64,14 +66,12 @@ const App = () => {
       dispatch(setNotification('Oops! something went wrong','red'))
     }
   }
-
-
-
+  //Need to refactor below function
   const handleLike = (recordToUpdate) => {
     const updatedRecord = { ...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
     updateBlogList(updatedRecord)
   }
-
+  //Need to refactor below function
   const updateBlogList = async (updatedRecord) => {
     try{
       const updatedListItem = await blogService.updateRecord(updatedRecord)
@@ -82,31 +82,23 @@ const App = () => {
     }
   }
 
-  const createBlogList = async (newObject) => {
+  const handleCreateBlogList = async (newObject) => {
     try{
-      const newRecord = await blogService.createRecord(newObject)
-      const newListItem = {
-        id      : newRecord.id,
-        url     : newRecord.url,
-        title   : newRecord.title,
-        author  : newRecord.author,
-        user    : [{ 'id' : user.id, 'name' : user.name, 'username' : user.username }],
-        likes   : newRecord.likes
-      }
-      setListToShow(listToShow.concat(newListItem))
+      const newListItem = { ...newObject,user: [{ 'id' : user.id, 'name' : user.name, 'username' : user.username }] }
+      dispatch(createBlogList(newListItem))
       dispatch(setNotification(`a new blog '${ newObject.title }' added by ${ user.name }`,'green'))
     } catch(exception){
       dispatch(setNotification('Could not creat the record','red'))
     }
   }
-
+  //Need to refactor below function
   const handleRemove = (recordToDelete) => {
     const confirmation = window.confirm(`Remove blog ${recordToDelete.title} by ${recordToDelete.author}`)
     if(confirmation){
       deleteBlogList(recordToDelete)
     }
   }
-
+  //Need to refactor below function
   const deleteBlogList = async (recordToDelete) => {
     try {
       await blogService.deleteRecord(recordToDelete)
@@ -118,6 +110,7 @@ const App = () => {
   }
 
   const loginForm = () => (
+    //Need to refactor below function
     <div>
       <LoginForm
         handelLogin={handelLogin}
@@ -128,7 +121,7 @@ const App = () => {
       />
     </div>
   )
-
+  //Need to refactor below function
   const display = () => {
     const sortByLikes = (a,b) => b.likes - a.likes
     return(
@@ -153,7 +146,7 @@ const App = () => {
       <h4>Create new blog list</h4>
       <Togglable buttonLable='Create New'>
         <BlogForm
-          createNew={createBlogList}
+          createNew={handleCreateBlogList}
         />
       </Togglable>
     </div>
