@@ -4,67 +4,30 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
-import blogService from './services/blog'
-import loginService from './services/login'
+import Display from './components/Display'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogList,createBlogList,deleteBlogList,updateBlogList } from './reducers/bloglistReducer'
-
+import { removeUser,setLoggedUser } from './reducers/userReducer'
 
 const App = () => {
 
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
 
   const [ listToShow,setListToShow ] = useState([])
-
-  const [ user,setUser]   = useState(null)
-  const [ username,setUsername ] = useState('')
-  const [ password,setPassword ] = useState('')
 
   //Download all the availabale records during the initial render
   useEffect(() => {
     dispatch(initializeBlogList())
+    dispatch(setLoggedUser())
   },[dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInUser')
-    if(loggedUserJSON){
-      const loggedInUser = JSON.parse(loggedUserJSON)
-      setUser(loggedInUser)
-      blogService.setToken(loggedInUser.token)
-      const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
-      setListToShow(blogList)
-    }
-  },[blogs])
-
-  const handelLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const loggedInUser = await loginService.login({ username,password })
-      setUser(loggedInUser)
-      blogService.setToken(loggedInUser.token)
-      const blogList = blogs.filter(record => record.user[0].username === loggedInUser.username)
-      setListToShow(blogList)
-      window.localStorage.setItem('loggedInUser',JSON.stringify(loggedInUser))
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      dispatch(setNotification('wrong username or passwrod','red'))
-    }
-  }
   //Need to refactor below function
   const handelLogout = async (event) => {
     event.preventDefault()
-    try{
-      setUser(null)
-      blogService.setToken(null)
-      window.localStorage.removeItem('loggedInUser')
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      dispatch(setNotification('Oops! something went wrong','red'))
-    }
+    dispatch(removeUser())
   }
   //Need to refactor below function
   const handleLike = (recordToUpdate) => {
@@ -78,7 +41,7 @@ const App = () => {
 
   const handleCreateBlogList = async (newObject) => {
     try{
-      const newListItem = { ...newObject,user: [{ 'id' : user.id, 'name' : user.name, 'username' : user.username }] }
+      const newListItem = { ...newObject, user: [{ 'id' : user.id, 'name' : user.name, 'username' : user.username }] }
       dispatch(createBlogList(newListItem))
       dispatch(setNotification(`a new blog '${ newObject.title }' added by ${ user.name }`,'green'))
     } catch(exception){
@@ -98,18 +61,6 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    //Need to refactor below function
-    <div>
-      <LoginForm
-        handelLogin={handelLogin}
-        username={username}
-        password={password}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-      />
-    </div>
-  )
   //Need to refactor below function
   const display = () => {
     const sortByLikes = (a,b) => b.likes - a.likes
@@ -122,7 +73,6 @@ const App = () => {
             blog={blog}
             handleClickLikeButton={handleLike}
             handleClickRemoveButton={handleRemove}
-            user={user}
           />)}
         </div>
       </div>
@@ -146,9 +96,10 @@ const App = () => {
       <h2>blogs</h2>
       <Notification />
       <div>
-        {user === null && loginForm()}
+        {user === null && <LoginForm /> }
         {user !== null && newBlogForm()}
         {user !== null && display()}
+        {user !== null && <Display />}
       </div>
     </div>
   )

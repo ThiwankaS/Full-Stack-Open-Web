@@ -1,22 +1,22 @@
-import { useState } from 'react'
+import useValue from '../hooks/customeHooks'
 
 const BlogForm = ({ createNew }) => {
 
-  const [ title,setTitle ] = useState('')
-  const [ author,setAuthor ] = useState('')
-  const [ url,setUrl ] = useState('')
+  const { reset : titleReset,...title } = useValue('text')
+  const { reset : authorReset,...author } = useValue('text')
+  const { reset : urlReset,...url } = useValue('text')
 
   const handleCreateNew = (event) => {
     event.preventDefault()
     const newObject = {
-      title,
-      author,
-      url
+      title : title.value,
+      author : author.value,
+      url : url.value
     }
     createNew(newObject)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    titleReset()
+    authorReset()
+    urlReset()
   }
 
   return (
@@ -24,15 +24,15 @@ const BlogForm = ({ createNew }) => {
       <form onSubmit={handleCreateNew}>
         <div>
             title :
-          <input id='title' placeholder='Title' type='text' value={title} name='Title' onChange={event => setTitle(event.target.value)}/>
+          <input id='title' placeholder='Title' value={title} {...title}/>
         </div>
         <div>
             author :
-          <input id='author' placeholder='Author' type='text' value={author} name='Author' onChange={event => setAuthor(event.target.value)}/>
+          <input id='author' placeholder='Author' value={author} {...author}/>
         </div>
         <div>
             url :
-          <input id='url' placeholder='Url' type='text' value={url} name='Url' onChange={event => setUrl(event.target.value)}/>
+          <input id='url' placeholder='Url' value={url} {...url}/>
         </div>
         <button id='create-button' type='submit'>Create</button>
       </form>
