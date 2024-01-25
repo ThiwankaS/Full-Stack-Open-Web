@@ -1,18 +1,15 @@
-import { useState } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Blog from '../components/Blog'
 
 const Display = () => {
-  const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
   const listToShow = blogs.filter(item => item.user[0].username === user.username)
-  const updateListToShow = (updatedRecord) => {
-  }
+  const sortByLikes = (a,b) => b.likes - a.likes
   return (
     <div>
-      <p>{user.username} logged in</p>
-      <div>{listToShow.map(blog => <Blog blog={blog} key={blog.id}/>)}</div>
+      <h4>previous list</h4>
+      <div>{listToShow.sort(sortByLikes).map(blog => <Blog blog={blog} key={blog.id}/>)}</div>
     </div>
   )
 }

@@ -1,42 +1,36 @@
 import { useState,useEffect } from 'react'
-import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Display from './components/Display'
+import UserDetails from './components/UserDetails'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogList,createBlogList,deleteBlogList,updateBlogList } from './reducers/bloglistReducer'
+import { initializeBlogList,createBlogList } from './reducers/bloglistReducer'
 import { removeUser,setLoggedUser } from './reducers/userReducer'
+import { initializeUserDetails } from './reducers/userDetailsReducer'
 
 const App = () => {
 
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
-
   const [ listToShow,setListToShow ] = useState([])
 
   //Download all the availabale records during the initial render
   useEffect(() => {
     dispatch(initializeBlogList())
+    dispatch(initializeUserDetails())
     dispatch(setLoggedUser())
   },[dispatch])
+
+  //setListToShow(blogs.filter(list => list.user[0].username === user.username))
 
   //Need to refactor below function
   const handelLogout = async (event) => {
     event.preventDefault()
     dispatch(removeUser())
-  }
-  //Need to refactor below function
-  const handleLike = (recordToUpdate) => {
-    const updatedRecord = { ...recordToUpdate, user : recordToUpdate.user[0].id,likes : recordToUpdate.likes + 1 }
-    try{
-      dispatch(updateBlogList(updatedRecord))
-    } catch (exception) {
-      dispatch(setNotification('Could not update the record','red'))
-    }
   }
 
   const handleCreateBlogList = async (newObject) => {
@@ -47,36 +41,6 @@ const App = () => {
     } catch(exception){
       dispatch(setNotification('Could not creat the record','red'))
     }
-  }
-  //Need to refactor below function
-  const handleRemove = (recordToDelete) => {
-    const confirmation = window.confirm(`Remove blog ${recordToDelete.title} by ${recordToDelete.author}`)
-    if(confirmation){
-      try {
-        dispatch(deleteBlogList(recordToDelete))
-        dispatch(setNotification(`' ${recordToDelete.title}' sucessfully removed`,'green'))
-      } catch (exception) {
-        dispatch(setNotification('Could not delete the record','red'))
-      }
-    }
-  }
-
-  //Need to refactor below function
-  const display = () => {
-    const sortByLikes = (a,b) => b.likes - a.likes
-    return(
-      <div>
-        <h4>previous list</h4>
-        <div>
-          {listToShow.sort(sortByLikes).map(blog => <Blog
-            key={blog.id}
-            blog={blog}
-            handleClickLikeButton={handleLike}
-            handleClickRemoveButton={handleRemove}
-          />)}
-        </div>
-      </div>
-    )
   }
 
   const newBlogForm = () => (
@@ -98,8 +62,8 @@ const App = () => {
       <div>
         {user === null && <LoginForm /> }
         {user !== null && newBlogForm()}
-        {user !== null && display()}
         {user !== null && <Display />}
+        {user !== null && <UserDetails />}
       </div>
     </div>
   )
