@@ -1,10 +1,12 @@
 import useValue from '../hooks/customeHooks'
 import { useDispatch } from 'react-redux'
 import { setLoginUser } from '../reducers/userReducer'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const { reset : usernameReset,...username } = useValue('text')
   const { reset : passwordRest,...password } = useValue('password')
@@ -18,6 +20,7 @@ const LoginForm = () => {
     dispatch(setLoginUser(credentials))
     usernameReset()
     passwordRest()
+    navigate('/create_blog')
   }
 
   return (
