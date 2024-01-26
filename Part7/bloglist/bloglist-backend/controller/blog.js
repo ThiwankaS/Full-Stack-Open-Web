@@ -20,7 +20,8 @@ blogRouter.post('/', async ( request,response) => {
         title   : body.title,
         author  : body.author,
         user    : user.id,
-        likes   : body.likes
+        likes   : body.likes,
+        comments : ['testing comments','this is another testing comment']
     })
     const savedList = await blog.save()
     user.blogs = user.blogs.concat(savedList._id)
@@ -49,7 +50,8 @@ blogRouter.put('/:id', async (request,response) => {
         title   : body.title,
         author  : body.author,
         user    : body.user,
-        likes   : body.likes
+        likes   : body.likes,
+        comments : ['default comment']
     }
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
     if(!decodedToken.id){
