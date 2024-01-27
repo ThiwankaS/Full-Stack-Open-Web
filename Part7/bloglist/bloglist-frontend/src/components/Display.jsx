@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
+import NewBlogForm from './NewBlogForm'
+import { ComponentHeading,Item } from '../assets/styledComponents'
 
 const Display = () => {
+  let blogs = useSelector(state => state.blogs)
   const [seletedBlog,setSelectedBlog] = useState(null)
-  const blogs = useSelector(state => state.blogs)
   const blogStyle = {
     paddingTop: 2,
     paddingLeft: 2,
@@ -18,11 +20,12 @@ const Display = () => {
   }
   return (
     <div>
-      <h4>blog app</h4>
+      <NewBlogForm />
+      <ComponentHeading>Blog app</ComponentHeading>
       <ul>
-        {blogs.map(blog => <div onClick={() => showBlogView(blog)} style={blogStyle} key={blog.id}>{blog.title}</div> )}
+        {blogs.map(blog => <Item onClick={() => showBlogView(blog)} style={blogStyle} key={blog.id}>{blog.title}</Item> )}
       </ul>
-      <Blog blog={seletedBlog}/>
+      <Blog blog={seletedBlog} />
     </div>
   )
 }

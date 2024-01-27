@@ -3,11 +3,10 @@ import { createBlogList } from '../reducers/bloglistReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
-import { useNavigate } from 'react-router-dom'
+import { ComponentHeading } from '../assets/styledComponents'
 
 const NewBlogForm = () => {
   const user = useSelector(state => state.user)
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleCreateBlogList = async (newObject) => {
     try{
@@ -23,7 +22,7 @@ const NewBlogForm = () => {
   }
   return(
     <div>
-      <h4>Create new blog list</h4>
+      <ComponentHeading>Create new blog list</ComponentHeading>
       <Togglable buttonLable='Create New'>
         <BlogForm
           createNew={handleCreateBlogList}

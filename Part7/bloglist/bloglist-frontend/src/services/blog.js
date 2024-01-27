@@ -36,4 +36,12 @@ const deleteRecord = async (recordToDelete) => {
   return response.data
 }
 
-export default { getAll,createRecord,setToken,updateRecord,deleteRecord }
+const addComment = async (updateObject) => {
+  const config = {
+    headers : { Authorization : token }
+  }
+  const response = await axios.put(`${baseUrl}/${updateObject.id}/comments`,updateObject,config)
+  return response.data
+}
+
+export default { getAll,createRecord,setToken,updateRecord,deleteRecord,addComment }

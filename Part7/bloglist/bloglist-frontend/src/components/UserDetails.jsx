@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import IndividualView from './IndividualView'
+import { ComponentHeading,Table,THead,TBody,TH,TR,TD,TDD } from '../assets/styledComponents'
+import { tableHeading,theData } from '../assets/styleClasses'
 
 const UserDetails = () => {
   const users = useSelector(state => state.users)
@@ -9,16 +11,21 @@ const UserDetails = () => {
   const showIndividualUser = (user) => {
     setSelectedUser(user)
   }
+
   return (
     <div>
-      <h2>users</h2>
+      <ComponentHeading>Users</ComponentHeading>
       <div>
-        <table>
-          <tr><th>user</th><th>blogs created</th></tr>
-          {users.map(user=>
-            <tr><td onClick={() => showIndividualUser(user)}>{user.name}</td><td>{user.blogs.length}</td></tr>
-          )}
-        </table>
+        <Table>
+          <THead>
+            <TR><TH style={tableHeading}>User</TH><TH style={tableHeading}>Blogs created</TH></TR>
+          </THead>
+          <TBody>
+            {users.map(user=>
+              <TR key={user.id}><TD style={theData} onClick={() => showIndividualUser(user)}>{user.name}</TD><TDD style={theData}>{user.blogs.length}</TDD></TR>
+            )}
+          </TBody>
+        </Table>
         <IndividualView user={selectedUser}/>
       </div>
     </div>)

@@ -1,6 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
-import { updateBlogList } from '../reducers/bloglistReducer'
+import { updateBlogList,deleteBlogList } from '../reducers/bloglistReducer'
+import Comment from './Comment'
+import { ComponentHeading,DisplayItem,Like,Button } from '../assets/styledComponents'
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -12,20 +14,26 @@ const Blog = ({ blog }) => {
       dispatch(setNotification('Could not update the record','red'))
     }
   }
+  const handelDelete = (recordToDelete) => {
+    try {
+      dispatch(deleteBlogList(recordToDelete))
+      dispatch(setNotification(`${recordToDelete.title} sucessfully removed`,'green'))
+    } catch (exception) {
+      dispatch(setNotification('Could not delete the record','red'))
+    }
+  }
   if(!blog){
     return null
   }
   return (
     <div>
-      <h2>{blog.title}</h2>
+      <ComponentHeading>{blog.title}</ComponentHeading>
       <div className='buttonDiv'>
-        <div>url : {blog.url}</div>
-        <div id='like-element' >likes : {blog.likes} <button id='like-button' onClick={() => handleLike(blog)}>like</button></div>
-        <div>Added by : {blog.user[0].name} </div>
-        <h4>comments</h4>
-        <ul>
-          { blog.comments.map(n => <li key={n}>{n}</li>)}
-        </ul>
+        <DisplayItem>Url : {blog.url}</DisplayItem>
+        <DisplayItem id='like-element' >Likes : {blog.likes} <Like id='like-button' onClick={() => handleLike(blog)}>like</Like></DisplayItem>
+        <DisplayItem>Added by : {blog.user[0].name} </DisplayItem>
+        <div><Button onClick={() => handelDelete(blog)}>Delete</Button></div>
+        <Comment blog={blog} />
       </div>
     </div>
   )

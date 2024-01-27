@@ -16,17 +16,29 @@ blogRouter.post('/', async ( request,response) => {
     }
     const user = await User.findById(decodedToken.id)
     const blog = new Blog({
-        url     : body.url,
-        title   : body.title,
-        author  : body.author,
-        user    : user.id,
-        likes   : body.likes,
-        comments : ['testing comments','this is another testing comment']
+        url      : body.url,
+        title    : body.title,
+        author   : body.author,
+        user     : user.id
     })
     const savedList = await blog.save()
     user.blogs = user.blogs.concat(savedList._id)
     await user.save()
     response.status(201).json(savedList)
+})
+
+blogRouter.put('/:id/comments', async (request,response) => {
+    const body = request.body
+    const updatedRecord = {
+            id       : body.id,
+            url      : body.url,
+            title    : body.title,
+            author   : body.author,
+            likes    : body.likes,
+            comments : body.comments
+    }
+    const result = await Blog.findByIdAndUpdate(request.params.id,updatedRecord, { new : true })
+    response.status(200).json(result)
 })
 
 blogRouter.delete('/:id', async (request,response) => {
@@ -45,13 +57,13 @@ blogRouter.delete('/:id', async (request,response) => {
 blogRouter.put('/:id', async (request,response) => {
     const body = request.body
     const updatedRecord = {
-        id      : body.id,
-        url     : body.url,
-        title   : body.title,
-        author  : body.author,
-        user    : body.user,
-        likes   : body.likes,
-        comments : ['default comment']
+        id       : body.id,
+        url      : body.url,
+        title    : body.title,
+        author   : body.author,
+        user     : body.user,
+        likes    : body.likes,
+        comments : body.comments
     }
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
     if(!decodedToken.id){

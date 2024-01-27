@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from '../assets/styledComponents'
 
 const Togglable = (props) => {
 
@@ -15,11 +16,11 @@ const Togglable = (props) => {
   return (
     <div>
       <div style={hideWhenVisibility}>
-        <button id='toggalbe-button' onClick={toggaleVisibility}>{props.buttonLable}</button>
+        <Button id='toggalbe-button' onClick={toggaleVisibility}>{props.buttonLable}</Button>
       </div>
       <div style={showWhenVisibility}>
         {props.children}
-        <button onClick={toggaleVisibility}>Cancel</button>
+        <Button onClick={toggaleVisibility}>Cancel</Button>
       </div>
     </div>
   )

@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogList } from './reducers/bloglistReducer'
 import { setLoggedUser,removeUser } from './reducers/userReducer'
 import { initializeUserDetails } from './reducers/userDetailsReducer'
-import { Routes,Route,Link,useNavigate,useMatch } from 'react-router-dom'
+import { Routes,Route,useNavigate,useMatch } from 'react-router-dom'
+import { StyledLink,Navigation,Button,Em } from './assets/styledComponents'
 
 const App = () => {
 
@@ -25,9 +26,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogList())
-    dispatch(initializeUserDetails())
     dispatch(setLoggedUser())
+    dispatch(initializeUserDetails())
   },[dispatch])
+
   const handelLogout = async (event) => {
     event.preventDefault()
     dispatch(removeUser())
@@ -36,14 +38,14 @@ const App = () => {
   return (
     <div>
       <Notification />
-      <div>
-        <Link style={padding} to='/blogs'>blogs</Link>
-        <Link style={padding} to='/users'>users</Link>
+      <Navigation>
+        <StyledLink style={padding} to='/blogs'>Blogs</StyledLink>
+        <StyledLink style={padding} to='/users'>Users</StyledLink>
         {user
-          ? <em>{user.name} logged in <button onClick={handelLogout}>Logout</button> </em>
-          : <Link style={padding} to='/login'>login</Link>
+          ?<Em>  {user.name} logged in <Button onClick={handelLogout}>Logout</Button> </Em>
+          : <StyledLink style={padding} to='/login'>login</StyledLink>
         }
-      </div>
+      </Navigation>
       <Routes>
         <Route path='/' element={<LoginForm />} />
         <Route path='/login' element={<LoginForm />} />

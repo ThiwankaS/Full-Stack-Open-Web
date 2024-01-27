@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blog'
+import { setNotification } from './notificationReducer'
 
 const bloglistSlice = createSlice({
   name : 'blogs',
@@ -12,10 +13,10 @@ const bloglistSlice = createSlice({
       return state.concat(action.payload)
     },
     updateBloglistState(state,action) {
-      return state.map(blogList => blogList.id !== action.payload.id ? blogList : action.payload)
+      return state.map(blog => blog.id !== action.payload.id ? blog : action.payload)
     },
     removeBlogListState(state,action) {
-      return state.filter(blogList => blogList !== action.payload.id)
+      return state.filter(blog => blog !== action.payload.id)
     }
   }
 })
@@ -30,9 +31,9 @@ export const initializeBlogList = () => {
   }
 }
 
-export const createBlogList = (blogList) => {
+export const createBlogList = (recordToCreate) => {
   return async (dispatch) => {
-    const newBlogList = await blogService.createRecord(blogList)
+    const newBlogList = await blogService.createRecord(recordToCreate)
     dispatch(appendBloglistState(newBlogList))
   }
 }
@@ -47,6 +48,13 @@ export const deleteBlogList = (recordToDelete) => {
 export const updateBlogList = (recordToUpdate) => {
   return async (dispatch) => {
     const updatedList = await blogService.updateRecord(recordToUpdate)
+    dispatch(updateBloglistState(updatedList))
+  }
+}
+
+export const addCommentToBlogList = (recordToUpdate) => {
+  return async (dispatch) => {
+    const updatedList = await blogService.addComment(recordToUpdate)
     dispatch(updateBloglistState(updatedList))
   }
 }
