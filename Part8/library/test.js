@@ -76,19 +76,13 @@ let authors = [
     },
   ]
 
-  const countBooks = (name) => {
-    return books.filter(p => p.author === name).length
-  }
-  const result = [{author : 'Robert Martin',bookCount : 2},{author : 'Martin Fowler',bookCount : 1},{author : 'Joshua Kerievsky',bookCount : 1},{author : 'Sandi Metz',bookCount : 1},{author : 'Fyodor Dostoevsky',bookCount : 2}]
-
- const getAuthorNames = books.reduce((name,book)=>{
-    const author = book.author
-    const isAlreadyExisit = name.find(p => p.author === author)
+  const listOfNames = (author) => {
+    const isAlreadyExisit = books.find(b => b.author === author)
     if(!isAlreadyExisit){
-        name.push({author : author, bookCount :  countBooks(author) })
+        return books
     }
-    return name
- },[])
+    const bookList = books.filter(book => book.author === author)
+    return bookList
+  }
 
-
- console.log(getAuthorNames)
+  console.log('list',listOfNames("Robert Martin"))
