@@ -1,5 +1,6 @@
-const { ApolloServer } = require('@apollo/server')
+const { ApolloServer } = require('@apollo/server') 
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const { v1 : uuid } = require('uuid')
 
 let authors = [
   {
@@ -85,17 +86,33 @@ const typeDefs = `
     published: Int!,
     author: String!,
     id: ID!,
-    genres: [String!]
+    genres: [String!]!
   }
   type Author {
     name : String!,
-    bookCount : Int!
+    born : Int,
+    bookCount : Int
   }
   type Query {
     bookCount : Int!,
     authorCount : Int!,
-    allBooks(author : String) : [Book!],
+    allBooks(author : String, genre : String) : [Book!],
     allAuthors : [Author!]
+  }
+  type Mutation {
+    addBook(
+      title : String!,
+      author : String!,
+      published : Int!,
+      genres : [String!]!
+    ):Book,
+    addAuthor(
+      name : String!
+    ):Author,
+    editAuthor(
+      name : String!,
+      setBornTo : Int!
+   ): Author
   }
 `
 
@@ -104,25 +121,71 @@ const resolvers = {
         bookCount: (root) => books.length,
         authorCount : (root) => authors.length,
         allBooks : (root,args) => {
-            const isAlreadyExisit = books.find(b => b.author === args.author)
-            if(!isAlreadyExisit){
+            const isAuthorAlreadyExist = books.find(b => b.author === args.author)
+            const isGenreAlreadyExist = books.find( b => b.genres.find( str => str === args.genre))
+            if(!isAuthorAlreadyExist && !isGenreAlreadyExist){
                 return books
             }
-            const bookList = books.filter(book => book.author === args.author)
-            return bookList
+            if(isAuthorAlreadyExist && !isGenreAlreadyExist){
+              const bookList = books.filter(book => book.author === args.author)
+              return bookList
+            }
+            if(!isAuthorAlreadyExist && isGenreAlreadyExist){
+              const bookList = books.filter( b => b.genres.find( str => str === args.genre))
+              return bookList
+            }
+            const bookList = books.filter(book => book.author === args.author && book.genres.find( str => str === args.genre))
+              return bookList
         },
         allAuthors : (root) => books.reduce((result,book)=>{
             const author = book.author
-            const countBooks = (str) => {
+            const getBookCount = (str) => {
                 return books.filter(p => p.author === str).length
             }
-            const isAlreadyExisit = result.find(p => p.name === author)
-            console.log('isAlreadyExisit',isAlreadyExisit)
-            if(!isAlreadyExisit){
-                result.push({ name : author, bookCount : countBooks(author) })
+            const getBornYear = (str) => {
+                return authors.filter(p => p.name === str)[0].born
+            }
+            const isAlreadyExist = result.find(p => p.name === author)
+            if(!isAlreadyExist){
+                result.push({ name : author, born : getBornYear(author),bookCount : getBookCount(author) })
             }
             return result
          },[])
+    },
+  Mutation : {
+      addBook : (root,args) => {
+        const name = args.author
+        const isAlreadyExist = authors.find(p => p.name === name)
+        if(!isAlreadyExist){
+          const newAuthor = {name : name, id : uuid()}
+          authors = authors.concat(newAuthor)
+          const newBook = {...args,id : uuid()}
+          books = books.concat(newBook)
+          return newBook
+        }
+        const newBook = { ...args, id : uuid() }
+        books = books.concat(newBook)
+        return newBook
+      },
+      addAuthor : (root,args) => {
+        const name = args.name
+        const isAlreadyExist = authors.find(p => p.name === name)
+        if(!isAlreadyExist){
+          const newAuthor = {...args,id : uuid() }
+          authors = authors.concat(newAuthor)
+          return newAuthor
+        }
+      },
+      editAuthor : (root,args) => {
+        const name = args.name
+        const author = authors.find(p => p.name === name)
+        if(!author){
+          return null
+        }
+        const newAuthor = {...author, born : args.setBornTo }
+        authors = authors.map(p => p.name === name ? newAuthor : p)
+        return newAuthor
+      }
     }
 }
 
