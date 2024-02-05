@@ -1,0 +1,11 @@
+{
+  "name": "library_backend",
+  "version": "0.0.1",
+  "description": "developing a back end to use GraphQl with React ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Thiwanka Somachandra",
+  "license": "MIT"
+}
