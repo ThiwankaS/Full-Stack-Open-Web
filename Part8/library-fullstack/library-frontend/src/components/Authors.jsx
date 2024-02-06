@@ -1,13 +1,15 @@
 import { useQuery,useMutation } from '@apollo/client'
 import { ALL_AUTHORS,UPDATE_AUTHOUR } from '../assets/queries'
 import { useEffect,useState } from 'react'
+import Select from 'react-select'
+
 
 const Authors = (props) => {
-  
+
   const  result = useQuery(ALL_AUTHORS)
   const [ authors,setAuthor ] = useState([])
-  const [ name,setName ] = useState('')
   const [ year,setYear ] = useState('')
+  const [ selectedOption,setSelectedOption ] = useState(null)
   const [ updateAuthor ] = useMutation(UPDATE_AUTHOUR,{
     refetchQueries : [{ query : ALL_AUTHORS }]
   })
@@ -20,12 +22,20 @@ const Authors = (props) => {
 
   const submit = (event) => {
     event.preventDefault()
+    const name = selectedOption.value
     updateAuthor({
       variables : { name,year }
     })
-    setName('')
+    setSelectedOption(null)
     setYear('')
   }
+
+  const constructOption = (authors) => {
+    return authors.reduce((options,author) => {
+      options.push({ value : author.name, label : author.name }) 
+      return options
+    }, [])
+  } 
 
   if (!props.show) {
     return null
@@ -51,13 +61,16 @@ const Authors = (props) => {
         </tbody>
       </table>
       <div>
-        <h2>set birthyear</h2>
+        <h2>set birth year</h2>
         <form onSubmit={submit}>
-          <div>
-            name : 
-            <input name='name' value={name} type='text' onChange={({ target }) => setName(target.value)}/>
+        <div>
+            <Select 
+                options={constructOption(authors)} 
+                onChange={(option) => setSelectedOption(option)}
+                placeholder={'Select author name ...'}
+              />
           </div>
-          <div>
+          <div style={{ padding : '5px' }}>
             birth year : 
             <input name='birthYear' value={year} type="number" onChange={({ target }) => setYear(parseInt(target.value))}/>
           </div>
