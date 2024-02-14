@@ -1,6 +1,7 @@
 const { ApolloServer } = require('@apollo/server') 
 const { startStandaloneServer } = require('@apollo/server/standalone')
 require('dotenv').config()
+const { GraphQLError } = require('graphql')
 const mongoose = require('mongoose')
 const Books = require('./models/book')
 const Authors = require('./models/author')
@@ -85,23 +86,53 @@ const resolvers = {
         
         const handleBook = async (bookToHandle) => {
           const book = new Books(bookToHandle)
-          const savedBook = await book.save()
-          const newBook = await Books.findOne({ title : savedBook.title }).populate('author')
-          return newBook
+          try{
+            const savedBook = await book.save()
+            const newBook = await Books.findOne({ title : savedBook.title }).populate('author')
+            return newBook
+          } catch (error){
+            throw new GraphQLError('Saving book failed',{
+              extensions : {
+                code : 'BAD_USER_INPUT',
+                invalidArgs : args.title,
+                error
+              }
+            })
+          }
         }
 
-        const existingAuthor = await Authors.findOne({ name : args.author })
+      const existingAuthor = await Authors.findOne({ name : args.author })
 
           if(!existingAuthor){
             const author = new Authors({ name : args.author })
-            const savedAuthor = await author.save()
-            return handleBook({ ...args, author : savedAuthor._id })
+            try{
+              const savedAuthor = await author.save()
+              return handleBook({ ...args, author : savedAuthor._id })
+            }catch(error){
+              throw new GraphQLError('Saving author faild',{
+                extensions : {
+                  code : 'BAD_USER_INPUT',
+                  invalidArgs : args.author,
+                  error
+                }
+              })
+            }
           }
         return handleBook({ ...args, author : existingAuthor._id })
       },
       addAuthor : async (root,args) => {
-        const author = new Authors({ ...args })
-        return author.save()
+        try{
+          const author = new Authors({ ...args })
+          return author.save()
+        }catch(error){
+          throw new GraphQLError('Saving author faild',{
+            extensions : {
+              code : 'BAD_USER_INPUT',
+              invalidArgs : args.author,
+              error
+            }
+          })
+        }
       },
       editAuthor : async (root,args) => {
         const name = args.name
@@ -109,10 +140,20 @@ const resolvers = {
         if(!author){
           return null
         }
-        author.born = args.setBornTo
-        await author.save()
-        const updatedAuthor = await Authors.findOne({ name : name })
-        return updatedAuthor
+        try {
+          author.born = args.setBornTo
+          await author.save()
+          const updatedAuthor = await Authors.findOne({ name : name })
+          return updatedAuthor
+        } catch (error) {
+          throw new GraphQLError('Saving author faild',{
+            extensions : {
+              code : 'BAD_USER_INPUT',
+              invalidArgs : args.author,
+              error
+            }
+          })
+        }
       }
     }
 }
