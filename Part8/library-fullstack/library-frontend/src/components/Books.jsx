@@ -1,10 +1,14 @@
 import { ALL_BOOKS } from '../assets/queries'
 import { useQuery } from '@apollo/client'
 import { useEffect,useState } from 'react'
+import Filter from '../components/Filter'
+import Display from '../components/Display'
 
 const Books = (props) => {
     const result = useQuery(ALL_BOOKS)
     const [ books,setBooks ] = useState([])
+    const [ filter,setFilter ] = useState('all genres')
+
     useEffect(()=>{
       if(result.data){
         setBooks(result.data.allBooks)
@@ -14,27 +18,11 @@ const Books = (props) => {
     if (!props.show) {
       return null
     }
-
     return (
       <div>
         <h2>books</h2>
-  
-        <table>
-          <tbody>
-            <tr>
-              <th></th>
-              <th>author</th>
-              <th>published</th>
-            </tr>
-            {books.map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Display books={books} filter={filter} />
+        <Filter books={books} setFilter={setFilter} /> 
       </div>
     )
   }
