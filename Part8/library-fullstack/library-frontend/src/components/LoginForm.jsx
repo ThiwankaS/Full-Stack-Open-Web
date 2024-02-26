@@ -23,7 +23,6 @@ const LoginForm = ({ show,setToken,token }) => {
     if(!show){
         return null
     }
-
     if(token){
         return <h4> Click 'logout' button to end the session... </h4>
     }
