@@ -21,7 +21,7 @@ const NewBook = (props) => {
         }
       })
     },
-    refetchQueries : [{ query : ALL_AUTHORS }]
+    refetchQueries : [{ query : ALL_AUTHORS }, { query : ALL_GENRES }]
   })
 
   if (!props.show) {
