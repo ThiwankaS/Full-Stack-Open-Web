@@ -13,7 +13,7 @@ const Recommend = (props) => {
     useEffect(() => {
         if(userResult.data){
             setCurrentUser(userResult.data.me)
-            setBooks(bookResult.data.allBooks)
+            setBooks([].concat(bookResult.data.allBooks))
         }
     },[userResult.data])
 

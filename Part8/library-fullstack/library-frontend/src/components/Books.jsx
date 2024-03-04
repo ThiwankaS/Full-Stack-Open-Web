@@ -1,11 +1,13 @@
-import { ALL_BOOKS } from '../assets/queries'
+import { ALL_BOOKS,ALL_GENRES } from '../assets/queries'
 import { useQuery } from '@apollo/client'
 import { useEffect,useState } from 'react'
 import Filter from '../components/Filter'
 import Display from '../components/Display'
 
 const Books = (props) => {
+    const defaultFilter = ['all genres']
     const result = useQuery(ALL_BOOKS)
+    const allGenresList = useQuery(ALL_GENRES)
     const [ books,setBooks ] = useState([])
     const [ filter,setFilter ] = useState('all genres')
 
@@ -22,7 +24,7 @@ const Books = (props) => {
       <div>
         <h2>books</h2>
         <Display books={books} filter={filter} />
-        <Filter books={books} setFilter={setFilter} /> 
+        <Filter genres={defaultFilter.concat(allGenresList.data.allGenre)} setFilter={setFilter} /> 
       </div>
     )
   }
