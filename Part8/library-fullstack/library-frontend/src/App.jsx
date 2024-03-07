@@ -5,6 +5,7 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
 import { useApolloClient } from '@apollo/client'
+import { BOOK_ADDED } from './assets/queries'
 
 const App = () => {
 
