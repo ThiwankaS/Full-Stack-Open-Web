@@ -51,7 +51,6 @@ const resolvers = {
       },
     Mutation : {
         addBook : async (root,args,context) => {
-          
           const handleBook = async (bookToHandle) => {
             const book = new Books(bookToHandle)
             try{
@@ -68,7 +67,6 @@ const resolvers = {
               })
             }
           }
-  
         const existingAuthor = await Authors.findOne({ name : args.author })
         const currentUser = context.currentUser
           if(!currentUser){
@@ -79,7 +77,7 @@ const resolvers = {
             })
           }
             if(!existingAuthor){
-              const author = new Authors({ name : args.author, bookCount : 1 })
+              const author = new Authors({ name : args.author, bookCount : 1 })// Handling book count for n+1 solution 
               try{
                 const savedAuthor = await author.save()
                 const addedBook =  handleBook({ ...args, author : savedAuthor._id })
@@ -95,7 +93,7 @@ const resolvers = {
                 })
               }
             }
-          existingAuthor.bookCount = existingAuthor.bookCount + 1
+          existingAuthor.bookCount = existingAuthor.bookCount + 1 // Handling book count for n+1 solution
           await existingAuthor.save()
           const addedBook = handleBook({ ...args, author : existingAuthor._id })
           pubsub.publish('BOOK_ADDED',{ bookAdded : addedBook })
