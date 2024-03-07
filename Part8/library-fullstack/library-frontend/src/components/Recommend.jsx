@@ -20,10 +20,6 @@ const Recommend = (props) => {
     if(!props.show){
         return null
     }
-
-    if(!bookResult.data.allBooks){
-        return null
-    }
     
     return (
         <div>

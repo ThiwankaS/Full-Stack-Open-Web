@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useMutation,useSubscription } from '@apollo/client'
+import { useApolloClient, useMutation,useSubscription } from '@apollo/client'
 import { CREATE_BOOK,ALL_BOOKS,ALL_AUTHORS, ALL_GENRES,BOOK_ADDED } from '../assets/queries'
 
 const NewBook = (props) => {
+  const client = useApolloClient()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -26,14 +27,20 @@ const NewBook = (props) => {
 
   useSubscription(BOOK_ADDED,{
     onData : ({ data }) => {
-      window.alert(`${data.data.bookAdded.title} added`)
+      const addedBook = data.data.bookAdded
+      window.alert(`${addedBook.title} added`)
+      client.cache.updateQuery({ query : ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks : allBooks.concat(addedBook)
+        }
+      })
     }
   })
 
   if (!props.show) {
     return null
   }
-  
+  console.log('client',client.cache)
   const submit = async (event) => {
     event.preventDefault()
 
