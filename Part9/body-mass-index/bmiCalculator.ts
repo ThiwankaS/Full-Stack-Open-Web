@@ -1,4 +1,8 @@
+import { parseArguments } from './helper';
+
 const calculateBmi = ( height : number, weight : number ) : string => {
+    console.log(`Height : ${height} cm`);
+    console.log(`Weight : ${weight} Kg`);
     let index : number =  Math.round(((weight) / (Math.pow((height/100),2)))*100)/100;
     let result : string; 
     switch(true){
@@ -16,4 +20,13 @@ const calculateBmi = ( height : number, weight : number ) : string => {
     return result; 
 }
 
-console.log(calculateBmi(180,74)); 
+try {
+    const { value1 , value2 } = parseArguments(process.argv);
+    console.log(calculateBmi(value1,value2[0])); 
+} catch (error : unknown) {
+    let errorMessage = `Something bad happened!`;
+    if(error instanceof Error){
+        errorMessage += ` Error : ${error.message}`; 
+    }
+    console.log(errorMessage);
+}

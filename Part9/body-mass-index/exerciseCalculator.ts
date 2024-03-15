@@ -1,3 +1,5 @@
+import { parseArguments } from './helper';
+
 interface Result {
     success : boolean,
     target : number,
@@ -45,4 +47,13 @@ const calculateExercises = (target : number , hours : number[] ) : Result => {
     return result; 
 }
 
-console.log(calculateExercises(2,[3, 0, 2, 4.5, 0, 3, 1]))
+try {
+    const { value1 , value2 } = parseArguments(process.argv);
+    console.log(calculateExercises(value1,value2)); 
+} catch (error : unknown) {
+    let errorMessage = `Something bad happened!`;
+    if(error instanceof Error){
+        errorMessage += ` Error : ${error.message}`; 
+    }
+    console.log(errorMessage);
+}
