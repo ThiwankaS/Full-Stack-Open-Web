@@ -3,7 +3,7 @@ import { parseArguments } from './helper';
 const calculateBmi = ( height : number, weight : number ) : string => {
     console.log(`Height : ${height} cm`);
     console.log(`Weight : ${weight} Kg`);
-    let index : number =  Math.round(((weight) / (Math.pow((height/100),2)))*100)/100;
+    const index : number =  Math.round(((weight) / (Math.pow((height/100),2)))*100)/100;
     let result : string; 
     switch(true){
         case (index <= 18.4): 
@@ -18,7 +18,7 @@ const calculateBmi = ( height : number, weight : number ) : string => {
         default : result = ` Abnormal (obese weight)`;
     }
     return result; 
-}
+};
 
 try {
     const { value1 , value2 } = parseArguments(process.argv);

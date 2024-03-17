@@ -6,11 +6,13 @@ const app = express();
 app.get('/hello',(_request,response) => {
 
     response.send('Hello Full Stack!'); 
-})
+});
 
 app.get('/bmi',(request,response) => {
     if(request.query.height && request.query.weight){
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         const height : number = Number(request.query.height.toString());
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         const weight : number = Number(request.query.weight.toString());
 
         if(isNaN(height) || isNaN(weight)){
@@ -22,7 +24,7 @@ app.get('/bmi',(request,response) => {
     } else {
         return response.status(400).json({ " error " : " malformatted parameters " } ); 
     }
-})
+});
 
 const PORT = 3003;
 

@@ -5,7 +5,7 @@ interface Result {
 }
 
 export const calculateBmi = ( h : number , w : number ) : Result => {
-    let index : number =  Math.round(((w) / (Math.pow((h/100),2)))*100)/100;
+    const index : number =  Math.round(((w) / (Math.pow((h/100),2)))*100)/100;
     let result : string; 
     switch(true){
         case (index <= 18.4): 
@@ -23,5 +23,5 @@ export const calculateBmi = ( h : number , w : number ) : Result => {
         height : h,
         weight : w,
         bmi : result
-    } 
-}
+    };
+};

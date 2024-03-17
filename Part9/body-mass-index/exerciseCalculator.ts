@@ -16,19 +16,19 @@ const calculateExercises = (target : number , hours : number[] ) : Result => {
         1 : 'not up to satisfactory, need to work hard',
         2 : 'not too bad but could be better',
         3 : 'good, keep up the working'
-    } 
+    };
     const summary = hours.reduce((acc,element) => {
-        const { periodLenght,trainingDays,average } = acc;
-        let newPeriodLenght = periodLenght + 1;
-        let newTrainingDays = element === 0 ? trainingDays : trainingDays + 1;
+        const { periodLenght,trainingDays } = acc;
+        const newPeriodLenght = periodLenght + 1;
+        const newTrainingDays = element === 0 ? trainingDays : trainingDays + 1;
         sum = sum + element; 
-        let newAverage = sum / newPeriodLenght; 
-        return {...acc, periodLenght : newPeriodLenght, trainingDays :  newTrainingDays, average : newAverage }
+        const newAverage = sum / newPeriodLenght; 
+        return {...acc, periodLenght : newPeriodLenght, trainingDays :  newTrainingDays, average : newAverage };
     },{
         periodLenght : 0,
         trainingDays : 0,
         average : 0
-    })
+    });
         
     const success = summary.average >= target ? true : false;
     const rating = summary.average < 1 ? 1 : summary.average < 2 ? 2 : 3;
@@ -42,10 +42,10 @@ const calculateExercises = (target : number , hours : number[] ) : Result => {
         ratingDescription,
         target,
         average : summary.average
-    }
+    };
 
     return result; 
-}
+};
 
 try {
     const { value1 , value2 } = parseArguments(process.argv);

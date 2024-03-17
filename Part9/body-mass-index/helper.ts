@@ -5,7 +5,7 @@ interface InputValues {
 
 export const chekValues = (arr : number[]) : boolean => {
     return arr.every(element => typeof Number(element) === 'number'); 
-}
+};
 
 
 export const parseArguments = (args : string[]) : InputValues => {
@@ -16,8 +16,8 @@ export const parseArguments = (args : string[]) : InputValues => {
         return {
             value1 : Number(args[2]),
             value2 : numericValues
-        }
+        };
     } else {
         throw new Error(`Provided values are not numeric values!`);
     }
-}
+};
