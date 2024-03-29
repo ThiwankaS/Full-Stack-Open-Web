@@ -1,0 +1,12 @@
+GET http://localhost:3001/api/patients
+###
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Thiwanka Somachandra",
+    "ssn": "090388-399T",
+    "dateOfBirth": "1988-03-09",
+    "gender": "male",
+    "occupation": "Housekeeper"
+}

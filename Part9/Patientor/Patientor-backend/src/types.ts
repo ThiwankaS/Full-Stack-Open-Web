@@ -1,4 +1,5 @@
 export type NonSensitivePatientEntries = Omit<Patients,'ssn'>;
+export type NewPatientEntry = Omit<Patients,'id'>;
 
 export interface Diagnoses {
     code : string;
