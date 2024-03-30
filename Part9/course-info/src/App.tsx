@@ -24,10 +24,6 @@ const App = () => {
 }
 export default App;
 
-interface CourseParts {
-  name : string;
-  exerciseCount : number;
-}
 
 const Header = ({ name } : { name : string }) => {
   return (
@@ -36,7 +32,7 @@ const Header = ({ name } : { name : string }) => {
   </div>)
 }
 
-const Content = ({ content } : { content : CourseParts [] }) => {
+const Content = ({ content } : { content : Array<{name : string, exerciseCount : number}>}) => {
   return (
   <div>
     {content.map( part => <span key={part.name}> { part.name } { part.exerciseCount }<br /></span>)}
