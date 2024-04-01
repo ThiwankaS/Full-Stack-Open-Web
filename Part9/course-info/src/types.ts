@@ -1,23 +1,29 @@
-interface CoursePartsBasic {
+interface CoursePartBase {
     name : string;
     exerciseCount : number;
+}
+
+interface CoursePartDesc extends CoursePartBase {
     description : string;
+}
+
+interface CoursePartsBasic extends CoursePartDesc {
     kind : "basic"
 }
 
-interface CoursePartGroup {
-    name : string;
-    exerciseCount : number;
+interface CoursePartGroup extends CoursePartBase {
     groupProjectCount : number;
     kind : "group"
 }
 
-interface CoursePartBackground {
-    name : string;
-    exerciseCount : number;
-    description : string;
+interface CoursePartBackground  extends CoursePartDesc {
     backgroundMaterial : string;
     kind : "background"
 }
 
-export type CoursePart = CoursePartsBasic | CoursePartGroup | CoursePartBackground ;
+interface CousePartRequirement extends CoursePartDesc {
+    requirements : string[];
+    kind : "special"
+}
+
+export type CoursePart = CoursePartsBasic | CoursePartGroup | CoursePartBackground | CousePartRequirement;
