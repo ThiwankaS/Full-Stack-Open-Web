@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Weather, Visibility, NewDiaryEntry } from '../type';
+import toNewDiaryEntry from '../helper'; 
 
-const NewEntry = ({ addEntry }) => {
+const NewEntry = ({ addEntry } : { addEntry : (newEntry : NewDiaryEntry ) => void }) => {
     
     const [ date,setDate ] = useState('');
-    const [ weather,setWeather ] = useState('');
-    const [ visibility,setVisibility ] = useState('');
+    const [ weather,setWeather ] = useState<Weather>();
+    const [ visibility,setVisibility ] = useState<Visibility>();
     const [ comment,setComment ] = useState('');
 
     const handelAddEntry = (event : React.SyntheticEvent) => {
@@ -15,7 +17,15 @@ const NewEntry = ({ addEntry }) => {
             visibility,
             comment
         };
-        addEntry(entry);
+        addEntry(toNewDiaryEntry(entry));
+    }
+
+    const weatherFilter = (value : Weather ) => {
+       setWeather(value);
+    }
+
+    const visibilityFilter = (value : Visibility ) => {
+        setVisibility(value);
     }
     
     return (
@@ -26,25 +36,24 @@ const NewEntry = ({ addEntry }) => {
                     date : <input
                         name='date'
                         value={date}
-                        type='text'
+                        type='date'
                         onChange={(event) => setDate(event.target.value)}
                     />
                 </div>
                 <div>
-                    weather : <input
-                        name='weather'
-                        value={weather}
-                        type='text'
-                        onChange={(event) => setWeather(event.target.value)}
-                    />
+                    Weather : 
+                        Sunny <input type='radio' name='weatherFilter' onChange={() => weatherFilter(Weather.Sunny)} />
+                        Rainy <input type='radio' name='weatherFilter' onChange={() => weatherFilter(Weather.Rainy)} />
+                        Cloudy <input type='radio' name='weatherFilter' onChange={() => weatherFilter(Weather.Cloudy)} />
+                        Stormy <input type='radio' name='weatherFilter' onChange={() => weatherFilter(Weather.Stormy)} />
+                        Windy <input type='radio' name='weatherFilter' onChange={() => weatherFilter(Weather.Windy)} />
                 </div>
                 <div>
-                    visibility : <input
-                        name='visibility'
-                        value={visibility}
-                        type='text'
-                        onChange={(event) => setVisibility(event.target.value)}
-                    />
+                    Visibility : 
+                        Great <input type='radio' name='visibilityFilter' onChange={() => visibilityFilter(Visibility.Great)} />
+                        Good <input type='radio' name='visibilityFilter' onChange={() => visibilityFilter(Visibility.Good)} />
+                        Ok <input type='radio' name='visibilityFilter' onChange={() => visibilityFilter(Visibility.Ok)} />
+                        Poor <input type='radio' name='visibilityFilter' onChange={() => visibilityFilter(Visibility.Poor)} />
                 </div>
                 <div>
                     comment : <input

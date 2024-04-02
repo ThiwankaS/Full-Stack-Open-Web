@@ -21,7 +21,7 @@ const App = () => {
       if(axios.isAxiosError(error)) {
         setErrorMessage(error.response.data.error);
       } else {
-        console.log(error);
+        setErrorMessage(`Unhandled error occured, ${error}`);
       }
     }
   }

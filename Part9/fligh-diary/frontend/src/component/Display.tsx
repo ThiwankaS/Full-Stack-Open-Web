@@ -1,4 +1,4 @@
-const Display = ({ error }) => {
+const Display = ({ error } : { error : string }) => {
 
     const errorStyle = {
         color : 'red',

@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
     const newDiaryEntry = toNewDiaryEntry(req.body);
     const addedEntry = diaryService.addDiary(newDiaryEntry);
     res.json(addedEntry);
-  } catch (error: unknown) {
+  } catch (error : unknown) {
     const errorMessage = 'Something went wrong';
     if (error instanceof Error) {
       res.status(400).send({ error : `${errorMessage}. ${error.message }` });
