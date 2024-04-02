@@ -1,10 +1,20 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import diaryRouter from './routes/diaries';
 import cors from 'cors';
+
+const errorHandler = (error : any , _req : Request, res : Response, next : NextFunction ) => {
+  console.error(error.message);
+  if (error instanceof Error) {
+    return res.status(404).send({ error : error.message });
+  }
+  return next(error);
+};
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(errorHandler);
 
 const PORT = 3000;
 

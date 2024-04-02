@@ -52,9 +52,9 @@ const toNewDiaryEntry = (object: unknown): NewDiaryEntry => {
 
   if ('comment' in object && 'date' in object && 'weather' in object && 'visibility' in object)  {
     const newEntry: NewDiaryEntry = {
+      date: parseDate(object.date),
       weather: parseWeather(object.weather),
       visibility: parseVisibility(object.visibility),
-      date: parseDate(object.date),
       comment: parseComment(object.comment)
     };
   
