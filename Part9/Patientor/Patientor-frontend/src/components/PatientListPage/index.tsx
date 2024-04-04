@@ -9,6 +9,8 @@ import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
 
+import PatientView from "../PtientView";
+
 interface Props {
   patients : Patient[]
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
@@ -18,6 +20,8 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const [selectedPatient,setSelectedPatient] = useState<Patient|undefined>();
+  const [showPatientDetails,setShowPatientDetails] = useState<boolean>(false);
 
   const openModal = (): void => setModalOpen(true);
 
@@ -47,6 +51,21 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
     }
   };
 
+  const getSelectedPatient = async (id : string | undefined)=> {
+    const data = await patientService.getPatientById(id);
+    setSelectedPatient(data);
+  };
+
+  const showDetails = (id : string | undefined, event : React.SyntheticEvent) => {
+    event.preventDefault();
+    getSelectedPatient(id);
+    setShowPatientDetails(true);
+  };
+
+  const hideDetails = () => {
+    setSelectedPatient(undefined);
+    setShowPatientDetails(false);
+  };
   return (
     <div className="App">
       <Box>
@@ -66,7 +85,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <TableCell>{patient.name}</TableCell>
+              <TableCell><a href="" onClick={(event) => showDetails(patient.id,event)}>{patient.name}</a></TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
@@ -85,6 +104,11 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
       <Button variant="contained" onClick={() => openModal()}>
         Add New Patient
       </Button>
+      <PatientView 
+        patient={selectedPatient}
+        show={showPatientDetails}
+        onClose={hideDetails}
+      />
     </div>
   );
 };
