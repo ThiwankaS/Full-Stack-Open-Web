@@ -1,8 +1,9 @@
-import { Table, TableCell, TableRow, TableBody, TableHead,Button,Dialog, DialogContent} from '@mui/material';
+import { Table, TableCell, TableRow, TableBody, TableHead, Button, Dialog, DialogContent, Divider } from '@mui/material';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { Patient } from "../../types";
+import EntryView from './EntryView';
 
 interface Props {
     patient: Patient | undefined;
@@ -33,7 +34,11 @@ const PatientView : React.FC<Props> = ({ patient, show, onClose}) => {
                         </TableRow>
                     </TableBody>
                 </Table>
+                <EntryView temp={patient?.entries}/>
+                <Divider />
+                <br />
                 <Button variant="contained" onClick={() => onClose()}>Close</Button>
+                <br />
             </DialogContent>
         </Dialog>}
         </div>
