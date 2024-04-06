@@ -2,21 +2,22 @@ import { useState } from "react";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
 import axios from 'axios';
 
-import { PatientFormValues, Patient } from "../../types";
+import { PatientFormValues, Patient, Diagnoses } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
 
-import PatientView from "../PtientView";
+import PatientView from "../PatientView";
 
 interface Props {
   patients : Patient[]
+  diagnoses : Diagnoses[]
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
 }
 
-const PatientListPage = ({ patients, setPatients } : Props ) => {
+const PatientListPage = ({ patients, setPatients, diagnoses } : Props ) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
@@ -106,6 +107,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
       </Button>
       <PatientView 
         patient={selectedPatient}
+        diagnoses={diagnoses}
         show={showPatientDetails}
         onClose={hideDetails}
       />

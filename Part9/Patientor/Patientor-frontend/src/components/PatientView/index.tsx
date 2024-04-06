@@ -2,16 +2,17 @@ import { Table, TableCell, TableRow, TableBody, TableHead, Button, Dialog, Dialo
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
-import { Patient } from "../../types";
+import { Diagnoses, Patient } from "../../types";
 import EntryView from './EntryView';
 
 interface Props {
     patient: Patient | undefined;
+    diagnoses : Diagnoses[];
     show : boolean;
     onClose : () => void;
 }
 
-const PatientView : React.FC<Props> = ({ patient, show, onClose}) => {
+const PatientView : React.FC<Props> = ({ patient, show, onClose, diagnoses}) => {
     
     return (
         <div>
@@ -34,7 +35,7 @@ const PatientView : React.FC<Props> = ({ patient, show, onClose}) => {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <EntryView temp={patient?.entries}/>
+                <EntryView temp={patient?.entries} diagnoses={diagnoses}/>
                 <Divider />
                 <br />
                 <Button variant="contained" onClick={() => onClose()}>Close</Button>

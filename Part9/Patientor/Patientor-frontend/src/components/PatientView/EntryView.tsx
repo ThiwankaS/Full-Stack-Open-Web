@@ -1,12 +1,13 @@
 import { Typography } from '@mui/material';
-import { Entry } from '../../types';
+import { Entry,Diagnoses } from '../../types';
 import DataView from './DataView';
 
 interface Props{
     temp : Array<Entry> | undefined;
+    diagnoses : Diagnoses[];
 }
 
-const EntryView : React.FC<Props> = ({temp}) => {
+const EntryView : React.FC<Props> = ({temp,diagnoses }) => {
 
     return (
         <div>
@@ -14,7 +15,7 @@ const EntryView : React.FC<Props> = ({temp}) => {
                 Entries
             </Typography>
             <br />
-            { temp?.length === undefined || temp?.length > 0 ? (temp?.map((entry,index) => <DataView entry={entry} key={index}/>)) : <i>No etries to show</i> }
+            { temp?.length === undefined || temp?.length > 0 ? (temp?.map((entry,index) => <DataView entry={entry} key={index} diagnoses={diagnoses}/>)) : <i>No etries to show</i> }
         </div>
     );
 };
