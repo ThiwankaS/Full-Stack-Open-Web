@@ -1,7 +1,11 @@
-export type NonSensitivePatientEntries = Omit<Patient,'ssn' | 'entries'>;
+export type NonSensitivePatientEntries = Omit<Patient,'ssn'  | 'entries' >;
 export type NonSensitivePatient = Omit<Patient,'ssn' | 'entries'>;
 export type NewPatientEntry = Omit<Patient,'id'>;
 export type Entry = HealthCheckEntry | OccupationalHealthcareEntry | HospitalEntry;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
 export enum Gender {
     Male = 'male',
