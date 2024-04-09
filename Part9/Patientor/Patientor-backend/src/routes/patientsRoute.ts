@@ -1,7 +1,7 @@
 import express from 'express';
 import patientsService from '../services/patientsService';
 import toNewPatientEntry from '../utils';
-import { EntryWithoutId } from '../types';
+import { toNewMedicalEntry } from '../utils';
 
 const router = express.Router();
 
@@ -31,7 +31,7 @@ router.post('/',(request,response) => {
 router.post('/:id/entries',(request,response) => {
     try {
         const id : string = request.params.id;
-        const newMedicalEntry = request.body as EntryWithoutId;
+        const newMedicalEntry = toNewMedicalEntry(request.body);
         const updatedPatient  = patientsService.addMedicalEntry(id,newMedicalEntry);
         response.send(updatedPatient);
     } catch (error : unknown) {

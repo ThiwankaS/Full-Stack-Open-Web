@@ -79,3 +79,5 @@ const data = [
   ];
   
   export default data;
+
+  export const codes = data.map(item => item.code);

@@ -52,18 +52,18 @@ export interface BaseEntry {
 
 export interface HealthCheckEntry extends BaseEntry {
     healthCheckRating : HealthCheckRating;
-    type : 'HealthCheck';
+    type : Type | Type.HealthCheck;
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
     employerName : string;
-    sickLeave : SickLeave;
-    type : 'OccupationalHealthcare';
+    sickLeave? : SickLeave;
+    type : Type | Type.OccupationalHealthcare;
 }
 
 export interface HospitalEntry extends BaseEntry {
     discharge : Discharge;
-    type : 'Hospital';
+    type : Type | Type.Hospital;
 }
 
 export interface Patient {
