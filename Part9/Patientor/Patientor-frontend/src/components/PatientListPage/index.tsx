@@ -21,7 +21,8 @@ const PatientListPage = ({ patients, setPatients, diagnoses } : Props ) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const [selectedPatient,setSelectedPatient] = useState<Patient|undefined>();
+  const [selectedPatient,setSelectedPatient] = useState<Patient>();
+  const [selectedPatientId,setSelectedPatientId] = useState<string>('');
   const [showPatientDetails,setShowPatientDetails] = useState<boolean>(false);
 
   const openModal = (): void => setModalOpen(true);
@@ -52,15 +53,16 @@ const PatientListPage = ({ patients, setPatients, diagnoses } : Props ) => {
     }
   };
 
-  const getSelectedPatient = async (id : string | undefined)=> {
+  const getSelectedPatient = async (id : string)=> {
     const data = await patientService.getPatientById(id);
     setSelectedPatient(data);
   };
 
-  const showDetails = (id : string | undefined, event : React.SyntheticEvent) => {
+  const showDetails = (id : string , event : React.SyntheticEvent) => {
     event.preventDefault();
     getSelectedPatient(id);
     setShowPatientDetails(true);
+    setSelectedPatientId(id);
   };
 
   const hideDetails = () => {
@@ -110,6 +112,7 @@ const PatientListPage = ({ patients, setPatients, diagnoses } : Props ) => {
         diagnoses={diagnoses}
         show={showPatientDetails}
         onClose={hideDetails}
+        patientId={selectedPatientId}
       />
     </div>
   );

@@ -4,6 +4,10 @@ export type NewPatientEntry = Omit<Patient,'id'>;
 export type Entry = HealthCheckEntry | OccupationalHealthcareEntry | HospitalEntry;
 export type PatientFormValues = Omit<Patient, "id">;
 
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
 export enum Gender {
     Male = 'male',
     Female = 'female',
@@ -53,7 +57,7 @@ export interface HealthCheckEntry extends BaseEntry {
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-    employerName : string;
+    employerName? : string;
     sickLeave? : SickLeave;
     type : 'OccupationalHealthcare';
 }
