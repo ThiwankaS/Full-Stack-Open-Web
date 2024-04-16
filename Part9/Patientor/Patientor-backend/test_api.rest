@@ -8,17 +8,36 @@ Content-Type: application/json
     "ssn": "090388-399T",
     "dateOfBirth": "1988-03-09",
     "gender": "male",
-    "occupation": "Full Stack Developer"
+    "occupation": "Full Stack Developer",
+    "entries" : []
 }
 
 ###
-POST http://localhost:3001/api/patients/dc7b26fa-b0a2-4aee-8637-0d7fe72b50fd/entries
+POST http://localhost:3001/api/patients/0c85ee1d-348c-49ca-bf8b-7f48620d81e4/entries
 Content-Type: application/json
 
 {
     "date": "2019-10-20",
     "specialist" : "MD House",
-    "type": "OccupationalHealthcare",
     "description" : "Test medical entry",
-    "employerName" : "Tervestalo"
+    "diagnosisCodes" : ["S62.5"],
+    "type": "HealthCheck",
+    "healthCheckRating" : 20 
+}
+
+###
+POST http://localhost:3001/api/patients/ff2bbde1-a1cc-4f27-9864-17436a96ad7c/entries
+Content-Type: application/json
+
+{
+    "date": "2019-10-20",
+    "specialist" : "MD Office",
+    "type": "Hospital",
+    "description" : "Test Hospital entry",
+    "diagnosisCodes" : 1234,
+    "discharge" : {
+        "date" : "2024-04-09",
+        "criteria" : "test entry"
+    }
+
 }

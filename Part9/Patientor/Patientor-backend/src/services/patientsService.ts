@@ -29,15 +29,15 @@ const addNewPatientEntry = (newPatient : NewPatientEntry ) : Patient => {
     return newEntry;
 };
 
-const addMedicalEntry = (id : string ,newEntry : EntryWithoutId) : Patient | undefined => {
+const addMedicalEntry = (id : string ,newEntry : EntryWithoutId) : Entry | undefined => {
     const newMedicalEntry : Entry = { id : uuidv4(),...newEntry};
     const selectedPatient = patients.find(element => element.id === id);
     if (!selectedPatient) {
         return undefined;
-      }
+    }
     const updatedPatient = {...selectedPatient,entries : selectedPatient?.entries.concat(newMedicalEntry)};
     patients = patients.map(element => element.id !== id ? element : updatedPatient);
-    return updatedPatient;
+    return newMedicalEntry;
 };
 
 export default {

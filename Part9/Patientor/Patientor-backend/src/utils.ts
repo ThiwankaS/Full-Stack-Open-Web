@@ -3,7 +3,7 @@ import { codes } from "./data/diagnoses";
 
 const toNewPatientEntry = (object : unknown) : NewPatientEntry => {
     if( !object || typeof object !== 'object'){
-        throw new Error('Incorrect or missing required data in patient entry!');
+        throw new Error(`Incorrect or missing required data value in patient entry!`);
     }
     if( 'name' in object && 'ssn' in object && 'dateOfBirth' in object && 'occupation' in object && 'gender' in object && 'entries' in object){
         const newEntry : NewPatientEntry = {
@@ -16,14 +16,14 @@ const toNewPatientEntry = (object : unknown) : NewPatientEntry => {
         };
         return newEntry;
     }
-    throw new Error('Incorrect data in patient entry : some fileds are missing!');
+    throw new Error(`Incorrect data in patient entry : some filed values are missing!`);
 };
 
 export default toNewPatientEntry;
 
 export const toNewMedicalEntry = (object : unknown) : EntryWithoutId => {
     if(!object || typeof object !== 'object' || !('diagnosisCodes' in object)){
-        throw new Error('Incorrect or missing required data in medical entry!');
+        throw new Error(`Incorrect or missing required data value(s) in medical entry!`);
     }
     if('date' in object && 'specialist' in object && 'description' in object && 'diagnosisCodes' in object && 'type' in object){
         if('healthCheckRating' in object){
@@ -61,103 +61,103 @@ export const toNewMedicalEntry = (object : unknown) : EntryWithoutId => {
             return basicEntry;
         }
     }
-    throw new Error('Incorrect data  in medical entry : some fileds are missing!');
+    throw new Error(`Incorrect data  in medical entry : some filed value(s) are missing!`);
 };
 
 const parseName = (name : unknown) : string => {
     if( !isString(name) ){
-        throw new Error('Incorrect or missing name!');
+        throw new Error(`Incorrect or missing value [name] !`);
     }
     return name;
 };
 
 const parseSsn = (ssn : unknown) : string => {
     if(!isString(ssn)) {
-        throw new Error('Incorrect or missing ssn!');
+        throw new Error(`Incorrect or missing value [ssn] !`);
     }
     return ssn;
 };
 
 const parseDate = (dateOfBirth : unknown): string => {
     if(!isString(dateOfBirth) || !isDate(dateOfBirth)){
-        throw new Error('Incorrect or missing date Of Birth!');
+        throw new Error(`Incorrect or missing value [date] !`);
     }
     return dateOfBirth; 
 };
 
 const parseOccupation = (occupation : unknown) : string => {
     if(!isString(occupation)){
-        throw new Error('Incorrect or missing doccupation!');
+        throw new Error(`Incorrect or missing value [occupation] !`);
     }
     return occupation;
 };
 
 const parseGender = (gender : unknown) : Gender => {
     if(!isString(gender) || !isGender(gender)){
-        throw new Error('Incorrect or missing gender!');
+        throw new Error(`Incorrect or missing value [gender]!`);
     }
     return gender; 
 };
 
 const parseEntries = (entries : unknown) : Array<Entry> => {
     if(!Array.isArray(entries)) {
-        throw new Error('Incorrect or missing types in entries!');
+        throw new Error(`Incorrect or missing type value in [entries] !`);
     }
     return entries as Array<Entry>;
 };
 
 const parseSpecialist = (specialist : unknown) : string => {
     if(!isString(specialist)){
-        throw new Error('Incorrect or missing specialist!');
+        throw new Error(`Incorrect or missing value [specialist] !`);
     }
     return specialist;
 };
 
 const parseDescription = (description : unknown) : string => {
     if(!isString(description)){
-        throw new Error('Incorrect or missing description!');
+        throw new Error(`Incorrect or missing value [description] !`);
     }
     return description;
 };
 
 const parseDiagnosisCodes = (diagnosisCodes : unknown) : Array<Diagnoses['code']> => {
     if(!Array.isArray(diagnosisCodes) || !isCodes(diagnosisCodes as Array<string>)) {
-        throw new Error('Incorrect or missing Diagnosis Codes in entries!');
+        throw new Error(`Incorrect or missing value in entries [Diagnosis Code]!`);
     }
     return diagnosisCodes as Array<Diagnoses['code']>;
 };
 
 const parseType = (type : unknown) : Type => {
     if(!isString(type)){
-        throw new Error('Incorrect or missing types in entries!');
+        throw new Error(`Incorrect or missing value in entries [Type]!`);
     }
     return type as Type;
 };
 
 const parseHealthCheckRating = (healthCheckRating : unknown) : HealthCheckRating => {
     if(!isNumber(healthCheckRating) || !isHealthCheckRating(healthCheckRating)){
-        throw new Error('Incorrect or missing Health Check Rating in entries!');
+        throw new Error(`Incorrect or missing value in entries [Healthchek Rating]!`);
     }
     return healthCheckRating; 
 };
 
 const parseEmployerName = (employerName : unknown) : string => {
     if(!isString(employerName)){
-        throw new Error('Incorrect or missing Employer Name!');
+        throw new Error(`Incorrect or missing value in entries [Employer Name]!`);
     }
     return employerName;
 };
 
 const parseSickLeave = (sickLeave : unknown) : SickLeave => {
     if(!sickLeave || typeof sickLeave !== 'object' || !('startDate' in sickLeave) || !('endDate' in sickLeave) || !isString(sickLeave.startDate) || !isString(sickLeave.endDate) || !isDate(sickLeave.startDate) || !isDate(sickLeave.endDate)){
-        throw new Error('Incorrect or missing sick leave data!');
+        throw new Error(`Incorrect or missing value in entries [ScikeLeave data]!`);
     }
     return sickLeave as SickLeave;
 };
 
 const parseDischarge = (discharge : unknown) : Discharge => {
-    if(!discharge || typeof discharge !== 'object' || !('date' in discharge) || !('criteria' in discharge) || !isString(discharge.date) || isDate(discharge.date) || isString(discharge.criteria)){
-        throw new Error('Incorrect or missing discharge data!');
+    if(!discharge || typeof discharge !== 'object' || !('date' in discharge) || !('criteria' in discharge) || !isString(discharge.date) || !isDate(discharge.date) || !isString(discharge.criteria)){
+        throw new Error(`Incorrect or missing value in entries [Discharge data]!`);
     }
     return discharge as Discharge;
 };

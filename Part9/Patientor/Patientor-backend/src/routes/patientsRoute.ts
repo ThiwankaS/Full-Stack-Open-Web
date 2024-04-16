@@ -20,9 +20,9 @@ router.post('/',(request,response) => {
             const savedPatient = patientsService.addNewPatientEntry(newPatientEntry);
             response.send(savedPatient);
         } catch (error : unknown) {
-            let errorMessage = `Something went wrong.`;
+            let errorMessage = ` Error : `;
             if(error instanceof Error){
-                errorMessage += ` Error : ` + error.message;
+                errorMessage += error.message;
             }
             response.status(400).send(errorMessage);
         }
@@ -35,9 +35,9 @@ router.post('/:id/entries',(request,response) => {
         const updatedPatient  = patientsService.addMedicalEntry(id,newMedicalEntry);
         response.send(updatedPatient);
     } catch (error : unknown) {
-        let errorMessage = `Something went wrong.`;
+        let errorMessage = ` Error : `;
         if(error instanceof Error){
-            errorMessage += ` Error : ` + error.message;
+            errorMessage += error.message;
         }
         response.status(400).send(errorMessage);
     }
