@@ -37,7 +37,7 @@ const PatientView : React.FC<Props> = ({ patient, show, onClose, diagnoses, pati
                         </TableRow>
                     </TableBody>
                 </Table>
-                <EntryView temp={patient?.entries} diagnoses={diagnoses} patientId={patientId}/>
+                <EntryView medicalEntries={patient?.entries} diagnoses={diagnoses} patientId={patientId}/>
                 <Button variant="contained" onClick={() => onClose()}>Close</Button>
             </DialogContent>
         </Dialog>}

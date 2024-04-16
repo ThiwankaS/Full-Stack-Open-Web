@@ -12,9 +12,9 @@ import patientService from "../../services/patients";
 import PatientView from "../PatientView";
 
 interface Props {
-  patients : Patient[]
-  diagnoses : Diagnoses[]
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
+  patients : Patient[];
+  diagnoses : Diagnoses[];
+  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
 
 const PatientListPage = ({ patients, setPatients, diagnoses } : Props ) => {

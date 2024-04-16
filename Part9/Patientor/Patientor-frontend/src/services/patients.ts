@@ -26,11 +26,11 @@ const create = async (object: PatientFormValues) => {
 };
 
 const createMedicalEntry = async (object : EntryWithoutId,id : string) => {
-  const { data } = await axios.post<Entry>(
-    `${apiBaseUrl}/patients/${id}/entries`,
-    object
-  );
-  return data;
+    const { data } = await axios.post<Entry>(
+      `${apiBaseUrl}/patients/${id}/entries`,
+      object
+    );
+    return data;
 };
 
 export default {
