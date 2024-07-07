@@ -1,0 +1,21 @@
+GET http://localhost:3000/todos
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Set up the development environment", 
+    "done": "false"
+}
+###
+GET http://localhost:3000/todos/668a01b1b57303a3491bb182
+###
+DELETE http://localhost:3000/todos/668a01e0b57303a3491bb188
+###
+PUT http://localhost:3000/todos/668a0256b57303a3491bb191
+Content-Type: application/json
+
+{
+    "text": "Set up the development environment", 
+    "done": "true"
+}

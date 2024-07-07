@@ -5,4 +5,10 @@ const todoSchema = new mongoose.Schema({
   done: Boolean
 })
 
-module.exports = mongoose.model('Todo', todoSchema)
+todoSchema.set('toJSON',{
+  transform : (document, returnedObject) => {
+    delete returnedObject.__v
+  }
+});
+
+module.exports = mongoose.model('Todo', todoSchema);
