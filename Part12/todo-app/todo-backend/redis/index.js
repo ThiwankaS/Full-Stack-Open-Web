@@ -21,7 +21,29 @@ if (!REDIS_URL) {
   setAsync = promisify(client.set).bind(client)    
 }
 
+async function incrementTodoCount () {
+  try {
+    const countStr = await getAsync('todo_count') || '0';
+    const count = parseInt(countStr,10);
+    await setAsync('todo_count', count + 1);
+  } catch (error) {
+    console.log('Error : Incrementing todo_count ');
+  }
+}
+
+async function getStatistics () {
+  try {
+    const countStr = await getAsync('todo_count') || '0';
+    const count = parseInt(countStr,10);
+    return count;
+  } catch (error) {
+    console.log('Error : Getting statistics');
+  }
+}
+
 module.exports = {
   getAsync,
-  setAsync
+  setAsync,
+  incrementTodoCount,
+  getStatistics
 }
