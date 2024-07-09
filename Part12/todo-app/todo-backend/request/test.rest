@@ -10,7 +10,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/todos/668a01b1b57303a3491bb182
 ###
-DELETE http://localhost:3000/todos/668a1ad797fc8b2888149f48
+DELETE http://localhost:3000/todos/668c98598d559e9cc5ca9bc8
 ###
 PUT http://localhost:3000/todos/668a0256b57303a3491bb191
 Content-Type: application/json
@@ -18,4 +18,12 @@ Content-Type: application/json
 {
     "text": "Set up the development environment", 
     "done": "true"
+}
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Conatainers are awsome", 
+    "done": "false"
 }

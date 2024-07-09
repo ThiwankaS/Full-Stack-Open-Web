@@ -41,9 +41,18 @@ async function getStatistics () {
   }
 }
 
+async function setStatistics (count) {
+  try {
+    await setAsync('todo_count', count);
+  } catch (error) {
+    console.log('Error : Setting statistics');
+  }
+}
+
 module.exports = {
   getAsync,
   setAsync,
   incrementTodoCount,
-  getStatistics
+  getStatistics,
+  setStatistics
 }
